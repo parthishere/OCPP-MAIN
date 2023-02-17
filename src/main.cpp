@@ -23,9 +23,9 @@
 // #define Password "1234567890"
 
 // Webserver details
-#define OCPP_HOST "192.168.137.1" //"ocpp.gridenpower.com"
+#define OCPP_HOST "192.168.137.1" //"3.109.235.50" //"3.110.42.33" //"ocpp.gridenpower.com" //
 #define OCPP_PORT 6630
-#define OCPP_URL "ws://192.168.137.1:6630/ocpp/GP001" //"ws://ocpp.gridenpower.com:6630/ocpp/GP004"
+#define OCPP_URL "ws://192.168.137.1:6630/ocpp/GP001" //"ws://3.109.235.50:6630/ocpp/GP004" //"ws://ocpp.gridenpower.com:6630/ocpp/GP004" //"ws://3.110.42.33:6630/ocpp/GP004"
 
 #define FILE_SERVER_URL "https://fileuploads.up.railway.app"
 

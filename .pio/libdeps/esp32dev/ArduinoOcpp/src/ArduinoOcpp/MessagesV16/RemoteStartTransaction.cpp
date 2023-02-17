@@ -96,75 +96,6 @@ std::unique_ptr<DynamicJsonDocument> RemoteStartTransaction::createConf()
         }
     }
 
-    /*
-    if(canStartTransaction){
-        if(ocppModel && ocppModel->getConnectorStatus(connectorId)){
-            auto connector = ocppModel->getConnectorStatus(connectorId);
-
-            connector->beginSession(idTag);
-            evPlugged1=0;
-            delay(2000);
-            //do{
-                authorize(idTag, [](JsonObject response){
-                    char idTag [IDTAG_LEN_MAX + 1] = {'\0'};
-                    if (!strcmp("Accepted", response["idTagInfo"]["status"] | "Invalid")){
-                        Serial.println(F("User is authorized to start charging"));
-                        transaction = true;
-                        delay(9000);
-                        if (transaction==true){
-
-                        do{
-                                //st:
-                                if (digitalRead(EV_Plug_Pin) == EV_Plugged && evPlugged1 == 0 && getTransactionId() >= 0) {
-                                    //transition unplugged -> plugged; Case A: transaction has already been initiated
-                                    evPlugged1 = 1;
-                                    Serial.println("In Case A");
-                                    }
-                                    else if(digitalRead(EV_Plug_Pin) == EV_Plugged && evPlugged1 == 0 && isAvailable()){
-
-                                        startTransaction(idTag, [] (JsonObject response) {
-                                        //Callback: Central System has answered. Could flash a confirmation light here.
-                                            Serial.print(F("\n Inside start transaction"));
-                                            Serial.printf("[Remote] Started OCPP transaction. Status: %s, transactionId: %u\n",
-                                                response["idTagInfo"]["status"] | "Invalid",
-                                                response["transactionId"] | -1);
-
-                                            trans_id = (response["transactionId"] | -1);
-
-                                            delay(5000);
-                                        });
-                                        delay(2000);
-                                        evPlugged1 = 1;
-                                        Serial.print("\n remote started !");
-                                        return;
-                                    }
-
-                                    else if (digitalRead(EV_Plug_Pin) == EV_Unplugged && evPlugged1 == 1){
-                                        el:
-                                        Serial.println("\n Inside stop");
-                                        evPlugged1 = 0;
-
-                                        if(trans_id >=0){
-                                            stopTransaction([](JsonObject response){
-                                                Serial.print(F("Stopped OCPP transaction due to unplug"));
-                                            });
-                                            trans_id = -1;
-                                            transaction = false;
-                                        }
-                                    break;
-                                    }
-                                    //goto st;
-                    }while(evPlugged1 == 0);
-                    }
-                    }
-                });
-            //}while(evPlugged1==0);
-
-        }
-        payload["status"]="Accepted";
-    }
-    */
-
     if (canStartTransaction)
     {
         if (getTransactionId() <= 0)
@@ -334,6 +265,31 @@ payload["status"] = "Accepted";
     {
         AO_DBG_INFO("No connector to start transaction");
         // payload["status"] = "Accepted";
+        ocppsetup.buzz();
+        ocppsetup.lcdClear();
+
+        ocppsetup.lcdPrint("No Connector ", 0, 0);
+        ocppsetup.lcdPrint("is Available", 1, 0);
+        ocppsetup.lcdPrint("to Start Charging!!", 2, 0);
+
+        ocppsetup.ledChangeColour(255, 0, 0);
+        delay(500);
+        ocppsetup.ledChangeColour(0, 0, 0);
+        delay(500);
+        ocppsetup.ledChangeColour(255, 0, 0);
+        delay(500);
+        ocppsetup.ledChangeColour(0, 0, 0);
+        delay(500);
+        ocppsetup.ledChangeColour(255, 0, 0);
+        delay(500);
+        ocppsetup.ledChangeColour(0, 0, 0);
+        delay(500);
+        ocppsetup.ledChangeColour(255, 0, 0);
+        delay(500);
+        ocppsetup.ledChangeColour(0, 0, 0);
+        delay(500);
+
+        ocppsetup.lcdClear();
         payload["status"] = "Rejected";
     }
 
@@ -357,12 +313,6 @@ payload["status"] = "Accepted";
     return doc;
 }
 
-// if authorised
-// transaction_in_process = true;
-
-// if charging started
-//  isInSession() == true ----> if true
-//  evPlugged == EV_Plugged
 std::unique_ptr<DynamicJsonDocument> RemoteStartTransaction::createReq()
 {
     auto doc = std::unique_ptr<DynamicJsonDocument>(new DynamicJsonDocument(JSON_OBJECT_SIZE(1)));
