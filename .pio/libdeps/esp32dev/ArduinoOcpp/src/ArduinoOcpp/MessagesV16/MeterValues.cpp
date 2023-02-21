@@ -12,6 +12,7 @@
 #include <ArduinoOcpp.h>
 #include <ArduinoOcpp/MessagesV16/StopTransaction.h>
 
+
 using ArduinoOcpp::Ocpp16::MeterValues;
 int t = 1;
 int trans = -1;
@@ -144,17 +145,34 @@ std::unique_ptr<DynamicJsonDocument> MeterValues::createReq()
             // int temp_value_int = atoi(value_str);
             float temp_value_int = atof(value_str) - meterStop;
             Serial.println(temp_value_int);
-            char buffer[1000];
-            sprintf(buffer, "%.3f", temp_value_int);
-            temp_value = buffer;
-            ocppsetup.lcdPrint("               ", 1, 5);
-            ocppsetup.lcdPrint("Wh : ", 1, 0);
-            ocppsetup.lcdPrint(temp_value, 1, 5);
-            ocppsetup.lcdPrint("MTR: ", 3, 0);
+            if(temp_value_int >= 0)
+            {
+                char buffer[1000];
+                sprintf(buffer, "%.3f", temp_value_int);
+                temp_value = buffer;
+                ocppsetup.lcdPrint("               ", 1, 5);
+                ocppsetup.lcdPrint("Wh : ", 1, 0);
+                ocppsetup.lcdPrint(temp_value, 1, 5);
+                ocppsetup.lcdPrint("MTR: ", 3, 0);
 
-            sampledValue_1["value"] = temp_value;
-            sampledValue_1["measurand"] = "Energy.Active.Import.Register";
-            sampledValue_1["unit"] = "Wh";
+                sampledValue_1["value"] = temp_value;
+                sampledValue_1["measurand"] = "Energy.Active.Import.Register";
+                sampledValue_1["unit"] = "Wh";
+            }
+            else{
+                temp_value_int = temp_value_int * -1;
+                char buffer[1000];
+                sprintf(buffer, "%.3f", temp_value_int);
+                temp_value = buffer;
+                ocppsetup.lcdPrint("               ", 1, 5);
+                ocppsetup.lcdPrint("Wh : ", 1, 0);
+                ocppsetup.lcdPrint(temp_value, 1, 5);
+                ocppsetup.lcdPrint("MTR: ", 3, 0);
+
+                sampledValue_1["value"] = temp_value;
+                sampledValue_1["measurand"] = "Energy.Active.Import.Register";
+                sampledValue_1["unit"] = "Wh";
+            }
 
                     }
         if (power.size() >= i + 1)
@@ -168,18 +186,34 @@ std::unique_ptr<DynamicJsonDocument> MeterValues::createReq()
             // int temp_value_int = atoi(value_str);
             float temp_value_int = atof(value_str) - meterStop;
             Serial.println(temp_value_int);
-            char buffer[1000];
-            sprintf(buffer, "%.3f", temp_value_int);
-            temp_value = buffer;
-            // ocppsetup.lcdPrint("Meter: (", 2, 0);
-            ocppsetup.lcdPrint("               ", 1, 5);
-            ocppsetup.lcdPrint("W : ", 1, 0);
-            ocppsetup.lcdPrint(temp_value, 1, 5);
-            ocppsetup.lcdPrint("MTR: ", 3, 0);
+            if(temp_value_int >= 0)
+            {
+                char buffer[1000];
+                sprintf(buffer, "%.3f", temp_value_int);
+                temp_value = buffer;
+                ocppsetup.lcdPrint("               ", 1, 5);
+                ocppsetup.lcdPrint("W : ", 1, 0);
+                ocppsetup.lcdPrint(temp_value, 1, 5);
+                ocppsetup.lcdPrint("MTR: ", 3, 0);
 
-            sampledValue_1["value"] = temp_value;
-            sampledValue_1["measurand"] = "Energy.Active.Import.Register";
-            sampledValue_1["unit"] = "W";
+                sampledValue_1["value"] = temp_value;
+                sampledValue_1["measurand"] = "Energy.Active.Import.Register";
+                sampledValue_1["unit"] = "W";
+            }
+            else{
+                temp_value_int = temp_value_int * -1;
+                char buffer[1000];
+                sprintf(buffer, "%.3f", temp_value_int);
+                temp_value = buffer;
+                ocppsetup.lcdPrint("               ", 1, 5);
+                ocppsetup.lcdPrint("W : ", 1, 0);
+                ocppsetup.lcdPrint(temp_value, 1, 5);
+                ocppsetup.lcdPrint("MTR: ", 3, 0);
+
+                sampledValue_1["value"] = temp_value;
+                sampledValue_1["measurand"] = "Energy.Active.Import.Register";
+                sampledValue_1["unit"] = "W";
+            }
         }
     }
 
