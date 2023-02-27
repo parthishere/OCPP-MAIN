@@ -12,6 +12,9 @@
 #include <ArduinoOcpp/MessagesV16/StatusNotification.h>
 #include <ArduinoOcpp/Tasks/ChargePointStatus/ConnectorStatus.h>
 #include <ArduinoOcpp/Core/OcppEngine.h>
+#include <ArduinoOcpp/MessagesV16/TriggerMessage.h>
+
+
 // WiFi connnection details
 #define SSID "ALIENWARE"
 #define Password "He@ven$heth05"
@@ -103,6 +106,7 @@ int screen = 0;
 
 OcppSetup ocppsetup;
 ArduinoOcpp::Ocpp16::ChangeAvailability changeAva;
+// ArduinoOcpp::Ocpp16::TriggerMessage trig;
 
 int freq = 5000;
 int RledChannel = 1;
@@ -285,11 +289,13 @@ void loop()
     }
 
     OCPP_loop();
-    // if (millis() - millissec > 20000)
-    // {
-    //     stat();
-    //     millissec = millis();
-    // }
+    if (millis() - millissec > 20000)
+    {
+        // status.StatusNotification();
+        // payload["Status"] = "StatusNotification";
+        // trig.processReq(payload["Status"]);
+        millissec = millis();
+    }
     if (millis() - prev_millis > 500)
     {
         char *mtr;
@@ -564,7 +570,7 @@ void loop()
             else
             {
                 ocppsetup.lcdClear();
-                ocppsetup.lcdPrint("Please plug in your", 0, 0);
+                ocppsetup.lcdPrint("Please Plug in your", 0, 0);
                 ocppsetup.lcdPrint("EV then try again!", 1, 0);
                 ocppsetup.ledChangeColour(255, 0, 0);
                 AO_DBG_INFO("PLease plug in your EV then try again!");

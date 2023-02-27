@@ -11,7 +11,7 @@
 #include <ArduinoOcpp/Debug.h>
 
 using ArduinoOcpp::Ocpp16::TriggerMessage;
-
+// void trigstat();
 const char* TriggerMessage::getOcppOperationType(){
     return "TriggerMessage";
 }
@@ -90,3 +90,21 @@ std::unique_ptr<DynamicJsonDocument> TriggerMessage::createConf(){
 
     return doc;
 }
+// void trigstat(){
+//     const char *requestedMessage = payload["requestedMessage"] | "Invalid";
+//     const int connectorId = payload["connectorId"] | -1;
+
+//     if (ocppModel && ocppModel->getChargePointStatusService()) {
+//             auto cpsService = ocppModel->getChargePointStatusService();
+//             if (connectorId < 0) {
+//                 auto nConnectors = cpsService->getNumConnectors();
+//                 for (decltype(nConnectors) i = 0; i < nConnectors; i++) {
+//                     triggeredOperations.push_back(makeOcppOperation(requestedMessage, i));
+//                 }
+//             } else if (connectorId < cpsService->getNumConnectors()) {
+//                 triggeredOperations.push_back(makeOcppOperation(requestedMessage, connectorId));
+//             } else {
+//                 errorCode = "PropertyConstraintViolation";
+//             }
+//         }
+// }

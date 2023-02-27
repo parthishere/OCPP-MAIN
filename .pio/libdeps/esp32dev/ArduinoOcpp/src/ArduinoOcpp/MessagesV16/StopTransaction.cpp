@@ -19,6 +19,7 @@ int meterStop = 0;
 int meterStop1 = 0;
 int meterStop2;
 int totalmeterStop = 0;
+
 // char Finishing = "Finishing";
 StopTransaction::StopTransaction(int connectorId) : connectorId(connectorId)
 {
@@ -151,8 +152,10 @@ void StopTransaction::processConf(JsonObject payload)
     digitalWrite(RELAY_1, HIGH);
     digitalWrite(RELAY_2, HIGH);
     if (digitalRead(EV_Plug_Pin) == EV_Plugged)
-    ocppsetup.buzz();
     {
+    ocppsetup.buzz();
+    // setstate("Finishing");
+    
         ocppsetup_ocpp.lcdClear();
         do
         {
@@ -166,6 +169,9 @@ void StopTransaction::processConf(JsonObject payload)
             AO_DBG_INFO("PLease unplug your EV");
             delay(2000);
         } while (digitalRead(EV_Plug_Pin) != EV_Unplugged);
+        // return OcppEvseState::Finishing;
+        
+    }
         // return 0;
         // payload["meterStop"] = 0.0;//
         delay(500);
@@ -197,7 +203,7 @@ void StopTransaction::processConf(JsonObject payload)
         ocppsetup.lcdPrint(ntwk, 3, 16);
         delay(10000);
         ocppsetup_ocpp.lcdClear();
-    }
+    
 }
 
 void StopTransaction::processReq(JsonObject payload)

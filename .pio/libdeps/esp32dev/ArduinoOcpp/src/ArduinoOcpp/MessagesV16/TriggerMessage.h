@@ -35,4 +35,5 @@ public:
 
 } //end namespace Ocpp16
 } //end namespace ArduinoOcpp
+// extern ArduinoOcpp::Ocpp16::TriggerMessage trig;
 #endif

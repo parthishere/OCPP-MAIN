@@ -77,7 +77,7 @@ void StatusNotification::initiate()
         return;
     }
 
-    if (ocppModel && ocppModel->getChargePointStatusService())
+    if (ocppModel && ocppModel->getChargePointStatusService())  
     {
         auto cpsService = ocppModel->getChargePointStatusService();
         if (connectorId < 0 || connectorId >= cpsService->getNumConnectors())

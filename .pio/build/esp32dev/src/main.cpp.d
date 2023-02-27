@@ -260,4 +260,5 @@
  .pio/libdeps/esp32dev/ArduinoOcpp/src/ArduinoOcpp/Core/ConfigurationKeyValue.h \
  .pio/libdeps/esp32dev/ArduinoOcpp/src/ArduinoOcpp/MessagesV16/CiStrings.h \
  .pio/libdeps/esp32dev/ArduinoOcpp/src/ArduinoOcpp/Core/OcppEngine.h \
- .pio/libdeps/esp32dev/ArduinoOcpp/src/ArduinoOcpp/Core/OcppConnection.h
+ .pio/libdeps/esp32dev/ArduinoOcpp/src/ArduinoOcpp/Core/OcppConnection.h \
+ .pio/libdeps/esp32dev/ArduinoOcpp/src/ArduinoOcpp/MessagesV16/TriggerMessage.h
