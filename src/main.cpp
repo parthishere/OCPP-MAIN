@@ -48,7 +48,7 @@ MFRC522 mfrc522(SDA_SS_PIN, RST_PIN); // create instance of class
 MFRC522::MIFARE_Key key;
 
 // Pin Mapping
-#define Amperage_Pin 4 // modulated as PWM
+#define Amperage_Pin 4 // modulated as PWM // ACS712
 
 #define EV_Plug_Pin 36 // Input pin | Read if an EV is connected to the EVSE
 #define EV_Plugged HIGH
@@ -72,6 +72,7 @@ MFRC522::MIFARE_Key key;
 #define SOS_pin 12
 #define SOS_pressed LOW
 #define SOS_unpressed HIGH
+#define volt_pin 26
 
 // variables declaration
 
