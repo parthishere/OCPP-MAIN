@@ -7,6 +7,7 @@
 #include <ArduinoOcpp/Debug.h>
 #include <MFRC522.h> //MFRC522 library
 #include <SPI.h>     //Include SPI library
+// #include <Firmware/lib/OcppSetup/OcppSetup.h>
 #include "OcppSetup.h"
 #include <ArduinoOcpp/MessagesV16/ChangeAvailability.h>
 #include <ArduinoOcpp/MessagesV16/StatusNotification.h>
