@@ -1,4 +1,6 @@
-marcoschwartz/LiquidCrystal_I2C@^1.1.4
 matth-x/ArduinoOcpp@^0.1.0
 makerspaceleiden/MFRC522-spi-i2c-uart-async@^1.5.1
 links2004/WebSockets@^2.3.7
+marcoschwartz/LiquidCrystal_I2C@^1.1.4
+r3mko/ZMPT101B-Sensor@^1.0.1
+rkoptev/ACS712 Current Sensor@^1.0.2

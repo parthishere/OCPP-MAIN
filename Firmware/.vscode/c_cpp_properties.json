@@ -10,6 +10,8 @@
             "includePath": [
                 "D:/griden/DC Charger Firmware/OcppEsp32-EV-main/Firmware/include",
                 "D:/griden/DC Charger Firmware/OcppEsp32-EV-main/Firmware/src",
+                "D:/griden/DC Charger Firmware/OcppEsp32-EV-main/Firmware/.pio/libdeps/esp32dev/ACS712 Current Sensor/src",
+                "D:/griden/DC Charger Firmware/OcppEsp32-EV-main/Firmware/.pio/libdeps/esp32dev/ZMPT101B-Sensor/src",
                 "D:/griden/DC Charger Firmware/OcppEsp32-EV-main/Firmware/.pio/libdeps/esp32dev/MFRC522-spi-i2c-uart-async/src",
                 "D:/griden/DC Charger Firmware/OcppEsp32-EV-main/Firmware/.pio/libdeps/esp32dev/ArduinoOcpp/src",
                 "D:/griden/DC Charger Firmware/OcppEsp32-EV-main/Firmware/lib/OcppSetup",
@@ -246,6 +248,8 @@
                 "path": [
                     "D:/griden/DC Charger Firmware/OcppEsp32-EV-main/Firmware/include",
                     "D:/griden/DC Charger Firmware/OcppEsp32-EV-main/Firmware/src",
+                    "D:/griden/DC Charger Firmware/OcppEsp32-EV-main/Firmware/.pio/libdeps/esp32dev/ACS712 Current Sensor/src",
+                    "D:/griden/DC Charger Firmware/OcppEsp32-EV-main/Firmware/.pio/libdeps/esp32dev/ZMPT101B-Sensor/src",
                     "D:/griden/DC Charger Firmware/OcppEsp32-EV-main/Firmware/.pio/libdeps/esp32dev/MFRC522-spi-i2c-uart-async/src",
                     "D:/griden/DC Charger Firmware/OcppEsp32-EV-main/Firmware/.pio/libdeps/esp32dev/ArduinoOcpp/src",
                     "D:/griden/DC Charger Firmware/OcppEsp32-EV-main/Firmware/lib/OcppSetup",
