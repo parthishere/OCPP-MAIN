@@ -14,6 +14,7 @@
 #include <ArduinoOcpp/MessagesV16/CiStrings.h>
 
 #include <ArduinoOcpp/Debug.h>
+#include "ArduinoOcpp.h"
 
 using namespace ArduinoOcpp;
 using namespace ArduinoOcpp::Ocpp16;
@@ -85,7 +86,12 @@ OcppEvseState ConnectorStatus::inferenceStatus() {
             return OcppEvseState::Finishing;
         }
         return OcppEvseState::Preparing;
-    } else {
+    }
+    // else if(getTransactionId() <= 0 && digitalRead(EV_Plug_Pin) == EV_Plugged)
+    // {
+    //     return OcppEvseState::Preparing;
+    // }
+    else {
         //Transaction is currently running
         if (evRequestsEnergySampler && !evRequestsEnergySampler()) {
             return OcppEvseState::SuspendedEV;

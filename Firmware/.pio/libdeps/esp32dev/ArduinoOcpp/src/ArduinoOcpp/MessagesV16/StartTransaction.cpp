@@ -9,8 +9,11 @@
 #include <ArduinoOcpp/Debug.h>
 #include <ArduinoOcpp.h>
 
+// OcppSetup ocppsetup;
 using ArduinoOcpp::Ocpp16::StartTransaction;
 int meterStart = -1;
+// bool connection_EV = false;
+// bool charge_EV = false;
 StartTransaction::StartTransaction(int connectorId) : connectorId(connectorId)
 {
 }
@@ -88,6 +91,7 @@ void StartTransaction::initiate()
     // else
     // {
         AO_DBG_INFO("StartTransaction initiated");
+        // charge_EV = true;
         // ocppsetup.lcdClear();
         // ocppsetup.lcdPrint("initialising Transaction",0,0);
         // delay(1000);

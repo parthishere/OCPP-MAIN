@@ -46,6 +46,9 @@
 #define FORMAT_SPIFFS_IF_FAILED true
 #define BUZZER_PIN 2
 
+// extern bool connection_EV;
+// extern bool charge_EV;
+
 class OcppSetup
 {
 
@@ -86,6 +89,7 @@ public:
     void lcdPrint(const char *msg, int x, int y);
     void lcdPrint(const char *msg);
     void lcdClear();
+    void lcdPrintint(int msg, int x, int y);
 
     void fileManageInitialize(const char *ssid, const char *pass);
     void ServerDisconnect();

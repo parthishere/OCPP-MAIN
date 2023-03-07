@@ -29,6 +29,8 @@ using namespace Parth;
 
 bool initialized_lcd = false;
 bool initialized_led = false;
+// bool connection_EV = false;
+// bool charge_EV = false;
 char *ssid;
 char *pass;
 
@@ -93,6 +95,11 @@ void OcppSetup::lcdPrint(const char *msg, int x, int y)
 void OcppSetup::lcdPrint(const char *msg)
 {
     lcd.setCursor(0, 0);
+    lcd.print(msg);
+}
+void OcppSetup::lcdPrintint(int msg, int x, int y)
+{
+    lcd.setCursor(y, x);
     lcd.print(msg);
 }
 void OcppSetup::lcdClear()

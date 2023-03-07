@@ -14,7 +14,7 @@
 #include <ArduinoOcpp/Tasks/ChargePointStatus/ConnectorStatus.h>
 #include <ArduinoOcpp/Core/OcppEngine.h>
 #include <ArduinoOcpp/MessagesV16/TriggerMessage.h>
-
+#include<LiquidCrystal_I2C.h>
 
 // WiFi connnection details
 #define SSID "ALIENWARE"
@@ -47,7 +47,7 @@
 
 MFRC522 mfrc522(SDA_SS_PIN, RST_PIN); // create instance of class
 MFRC522::MIFARE_Key key;
-
+LiquidCrystal_I2C lcd (0x27, 16,2);
 // Pin Mapping
 #define Amperage_Pin 4 // modulated as PWM // ACS712
 
@@ -109,7 +109,7 @@ int screen = 0;
 OcppSetup ocppsetup;
 ArduinoOcpp::Ocpp16::ChangeAvailability changeAva;
 // ArduinoOcpp::Ocpp16::TriggerMessage trig;
-
+int HH = 0, MM = 0, S = 0;
 int freq = 5000;
 int RledChannel = 1;
 int GledChannel = 2;
@@ -117,6 +117,8 @@ int BledChannel = 3;
 int resolution = 8;
 long int prev_millis;
 long int millissec;
+// bool connection_EV = false;
+// bool charge_EV = false;
 void setup()
 {
 
@@ -322,7 +324,6 @@ void loop()
         prev_millis = millis();
     }
     if (ocppsetup.getStatus() == "Available")
-
     {
         ocppsetup.lcdPrint("Welcome To", 0, 2);
         ocppsetup.lcdPrint("Griden Point!!!!", 1, 0);
@@ -333,6 +334,9 @@ void loop()
         delay(500);
         digitalWrite(RELAY_1, HIGH);
         digitalWrite(RELAY_2, HIGH);
+        HH = 00;
+        MM = 00;
+        S = 00;
     }
     else if (ocppsetup.getStatus() == "Charging")
     {
@@ -379,6 +383,33 @@ void loop()
         ocppsetup.lcdClear();
         screen = 0;
     }
+    if(ocppsetup.getStatus() == "Charging")
+    {
+        S++;  
+        delay ( 1000 );  
+        if ( S > 59 )  
+        {  
+            MM++;  
+            S = 0;  
+        }  
+        if ( MM > 59 )  
+        {  
+            HH++;  
+            MM = 0;  
+        }  
+        // Serial.printf("\n %d : %d : %d",HH,MM,S);
+        ocppsetup.lcdPrintint(HH, 2,7);
+        ocppsetup.lcdPrint(":", 2,9);
+        ocppsetup.lcdPrintint(MM, 2,10);
+        ocppsetup.lcdPrint(":", 2,12);
+        ocppsetup.lcdPrintint(S,2,13);
+
+    }
+    // if(digitalRead(EV_Charge_Pin)==EV_Plugged && charge_EV == false)
+    // {
+    //     Serial.println("Setting status as prepering");
+
+    // }
 
     // Reset Condition
 

@@ -19,7 +19,8 @@ int meterStop = 0;
 int meterStop1 = 0;
 int meterStop2;
 int totalmeterStop = 0;
-
+// bool connection_EV;
+// bool charge_EV;
 // char Finishing = "Finishing";
 StopTransaction::StopTransaction(int connectorId) : connectorId(connectorId)
 {
@@ -62,6 +63,7 @@ void StopTransaction::initiate()
     }
 
     AO_DBG_INFO("StopTransaction initiated!");
+    // charge_EV = false;
     ocppsetup.lcdClear();
     ocppsetup.buzz();
     ocppsetup.lcdPrint("StopTransaction",0,0);
