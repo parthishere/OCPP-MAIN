@@ -109,7 +109,7 @@ int screen = 0;
 OcppSetup ocppsetup;
 ArduinoOcpp::Ocpp16::ChangeAvailability changeAva;
 // ArduinoOcpp::Ocpp16::TriggerMessage trig;
-int HH = 0, MM = 0, S = 0;
+// int HH = 0, MM = 0, S = 0;
 int freq = 5000;
 int RledChannel = 1;
 int GledChannel = 2;
@@ -334,9 +334,9 @@ void loop()
         delay(500);
         digitalWrite(RELAY_1, HIGH);
         digitalWrite(RELAY_2, HIGH);
-        HH = 00;
-        MM = 00;
-        S = 00;
+        // HH = 00;
+        // MM = 00;
+        // S = 00;
     }
     else if (ocppsetup.getStatus() == "Charging")
     {
@@ -351,6 +351,7 @@ void loop()
         // }
         digitalWrite(RELAY_1, LOW);
         digitalWrite(RELAY_2, LOW);
+        ocppsetup.chargetime();
     }
     else if (ocppsetup.getStatus() == "SuspendedEVSE" || ocppsetup.getStatus() == "SuspendedEV" || ocppsetup.getStatus() == "Faulted" || ocppsetup.getStatus() == "available")
     {
@@ -383,28 +384,28 @@ void loop()
         ocppsetup.lcdClear();
         screen = 0;
     }
-    if(ocppsetup.getStatus() == "Charging")
-    {
-        S++;  
-        delay ( 1000 );  
-        if ( S > 59 )  
-        {  
-            MM++;  
-            S = 0;  
-        }  
-        if ( MM > 59 )  
-        {  
-            HH++;  
-            MM = 0;  
-        }  
-        // Serial.printf("\n %d : %d : %d",HH,MM,S);
-        ocppsetup.lcdPrintint(HH, 2,7);
-        ocppsetup.lcdPrint(":", 2,9);
-        ocppsetup.lcdPrintint(MM, 2,10);
-        ocppsetup.lcdPrint(":", 2,12);
-        ocppsetup.lcdPrintint(S,2,13);
+    // if(ocppsetup.getStatus() == "Charging")
+    // {
+    //     S++;  
+    //     delay ( 1000 );  
+    //     if ( S > 59 )  
+    //     {  
+    //         MM++;  
+    //         S = 0;  
+    //     }  
+    //     if ( MM > 59 )  
+    //     {  
+    //         HH++;  
+    //         MM = 0;  
+    //     }  
+    //     // Serial.printf("\n %d : %d : %d",HH,MM,S);
+    //     ocppsetup.lcdPrintint(HH, 2,7);
+    //     ocppsetup.lcdPrint(":", 2,9);
+    //     ocppsetup.lcdPrintint(MM, 2,10);
+    //     ocppsetup.lcdPrint(":", 2,12);
+    //     ocppsetup.lcdPrintint(S,2,13);
 
-    }
+    // }
     // if(digitalRead(EV_Charge_Pin)==EV_Plugged && charge_EV == false)
     // {
     //     Serial.println("Setting status as prepering");
