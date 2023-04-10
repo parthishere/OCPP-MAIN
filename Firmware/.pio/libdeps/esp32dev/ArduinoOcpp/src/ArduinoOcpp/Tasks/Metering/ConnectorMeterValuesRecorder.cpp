@@ -11,18 +11,20 @@
 #include <ArduinoOcpp/Debug.h>
 #include <ArduinoOcpp/Tasks/ChargePointStatus/ConnectorStatus.h>
 #include<ArduinoOcpp.h>
-
+#include <ZMPT101B.h>
+#include <ACS712.h>
 using namespace ArduinoOcpp;
 using namespace ArduinoOcpp::Ocpp16;
 int tran = -1;
+// ACS712 sensor(ACS712_05B, 4);
 ConnectorMeterValuesRecorder::ConnectorMeterValuesRecorder(OcppModel& context, int connectorId)
         : context(context), connectorId{connectorId} {
     sampleTimestamp = std::vector<OcppTimestamp>();
     energy = std::vector<float>();
     power = std::vector<float>();
-
+    
     MeterValueSampleInterval = declareConfiguration("MeterValueSampleInterval", 15);
-    MeterValuesSampledDataMaxLength = declareConfiguration("MeterValuesSampledDataMaxLength", 1, CONFIGURATION_VOLATILE, false, true, false, false);
+    MeterValuesSampledDataMaxLength = declareConfiguration("MeterValuesSampledDataMaxLength", 2, CONFIGURATION_VOLATILE, false, true, false, false);
 }
 
 void ConnectorMeterValuesRecorder::takeSample() {
@@ -98,12 +100,6 @@ OcppMessage *ConnectorMeterValuesRecorder::toMeterValues() {
     if (sampleTimestamp.size() == 0) {
         AO_DBG_DEBUG("Checking if to send MeterValues ... No");
         clear();
-        // Serial.println("\n");
-        // Serial.printf("\n energy :-  %f", energy);
-        // Serial.printf("\n power :-  %f", power);
-        // Serial.printf("\n sampleTImestamp :-  %f ",sampleTimestamp);
-        // Serial.println("\n \ncleared 1");
-        //return result;
         return nullptr;
     }
     
@@ -112,36 +108,22 @@ OcppMessage *ConnectorMeterValuesRecorder::toMeterValues() {
 
     if (energy.size() == sampleTimestamp.size() && power.size() == sampleTimestamp.size() && getTransactionId() > 0) {
         auto result = new MeterValues(&sampleTimestamp, &energy, &power, connectorId, lastTransactionId);
-        
         clear();
-        // Serial.printf("\n energy :-  %f", energy);
-        // Serial.printf("\n power :-  %f", power);
-        // Serial.printf("\n sampleTImestamp :-  %f ",sampleTimestamp);
-        // Serial.println("Cleared 2");
         return result;
     }
     
 
     if (energy.size() == sampleTimestamp.size() && power.size() != sampleTimestamp.size()) {
         auto result = new MeterValues(&sampleTimestamp, &energy, nullptr, connectorId, lastTransactionId);
-        
         clear();
         energy.clear();
-        // Serial.println("\n");
-        // Serial.printf("\n energy :-  %f", energy);
-        // Serial.printf("\n power :-  %f", power);
-        // Serial.printf("\n sampleTImestamp :-  %f ",sampleTimestamp);
-        // Serial.println("\n Cleared 3");
         tran = tran1;
-        // Serial.println(tran);
         return result;
     }
     
-
     if (energy.size() != sampleTimestamp.size() && power.size() == sampleTimestamp.size()) {
         auto result = new MeterValues(&sampleTimestamp, nullptr, &power, connectorId, lastTransactionId);
         clear();
-        // Serial.println("Cleared 4");
         return result;
     }
     
@@ -187,9 +169,6 @@ void ConnectorMeterValuesRecorder::clear() {
     sampleTimestamp.clear();
     energy.clear();
     power.clear();
-    // Serial.printf("\n energy :-  %f", energy);
-    // Serial.printf("\n power :-  %f", power);
-    // Serial.printf("\n sampleTImestamp :-  %f ",sampleTimestamp);
 }
 
 void ConnectorMeterValuesRecorder::setPowerSampler(PowerSampler ps){

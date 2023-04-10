@@ -82,7 +82,7 @@ public:
     Ticker onceTicker;
 
     int screen;
-    int S=0,HH=0,MM=0;
+    // int S=0,HH=0,MM=0;
     void ledChangeColour(int R, int G, int B);
 
     void lcdInitialize();
@@ -111,7 +111,7 @@ public:
 
     void sendCSVFile(char auth[]);
     void sendCSVFile(const char *server_name, char input[]);
-    void chargetime();
+    // void chargetime();
     void buzz();
     void buzzcontinue();
     void buzzstop();

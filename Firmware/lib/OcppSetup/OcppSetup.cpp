@@ -84,10 +84,26 @@ void OcppSetup::ledChangeColour(int R, int G, int B)
     ledcWrite(RledChannel, R);
     ledcWrite(BledChannel, B);
     ledcWrite(GledChannel, G);
-    HH = 0;
-    MM = 0;
-    S = 0;
+    // HH = 0;
+    // MM = 0;
+    // S = 0;
 }
+// void OcppSetup::chargetime()
+// {
+//     S++;
+//     delay(1000);
+//     if (S == 59)
+//     {
+//         MM++;
+//         S = 0;
+//     }
+//     if(MM == 59)
+//     {
+//         HH++;
+//         MM = 0;
+//     }
+//     Serial.printf("\n %d : %d : %d",HH,MM,S);
+// }
 
 void OcppSetup::lcdPrint(const char *msg, int x, int y)
 {
@@ -148,27 +164,27 @@ void listDir(fs::FS &fs, const char *dirname, uint8_t levels)
         file = root.openNextFile();
     }
 }
-void OcppSetup::chargetime()
-{
-        S++;  
-        delay ( 1000 );  
-        if ( S > 59 )  
-        {  
-            MM++;  
-            S = 0;  
-        }  
-        if ( MM > 59 )  
-        {  
-            HH++;  
-            MM = 0;  
-        }  
+// void OcppSetup::chargetime()
+// {
+        // S++;  
+        // delay ( 1000 );  
+        // if ( S > 59 )  
+        // {  
+        //     MM++;  
+        //     S = 0;  
+        // }  
+        // if ( MM > 59 )  
+        // {  
+        //     HH++;  
+        //     MM = 0;  
+        // }  
         // Serial.printf("\n %d : %d : %d",HH,MM,S);
-        ocppsetup.lcdPrintint(HH, 2,7);
-        ocppsetup.lcdPrint(":", 2,9);
-        ocppsetup.lcdPrintint(MM, 2,10);
-        ocppsetup.lcdPrint(":", 2,12);
-        ocppsetup.lcdPrintint(S,2,13);
-}
+        // ocppsetup.lcdPrintint(HH, 2,7);
+        // ocppsetup.lcdPrint(":", 2,9);
+        // ocppsetup.lcdPrintint(MM, 2,10);
+        // ocppsetup.lcdPrint(":", 2,12);
+        // ocppsetup.lcdPrintint(S,2,13);
+// }
 void readFile(fs::FS &fs, const char *path)
 {
     Serial.printf("Reading file: %s\r\n", path);

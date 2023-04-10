@@ -150,7 +150,7 @@ void OCPP_loop() {
     // SOS condition
     if (digitalRead(SOS_pin)==SOS_pressed)
     {
-        ocppsetup_ocpp.ledChangeColour(255, 0, 0);
+        ocppsetup_ocpp.ledChangeColour(255, 165, 0);
         if(digitalRead(RELAY_1)==LOW && digitalRead(RELAY_2)== LOW)
         {
             digitalWrite(RELAY_1, HIGH);

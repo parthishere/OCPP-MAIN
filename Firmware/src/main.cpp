@@ -2,7 +2,8 @@
 
 #include <Arduino.h> //Arduino firmware library
 #include <WiFi.h>    //Wifi library
-
+// #include <ZMPT101B.h>
+// #include <ACS712.h>
 #include <ArduinoOcpp.h> //Matt-x/ArduinoOcpp library
 #include <ArduinoOcpp/Debug.h>
 #include <MFRC522.h> //MFRC522 library
@@ -20,16 +21,10 @@
 #define SSID "ALIENWARE"
 #define Password "He@ven$heth05"
 
-// #define SSID "ROG-hp"
-// #define Password ""
-
-// #define SSID "parth"
-// #define Password "1234567890"
-
 // Webserver details
-#define OCPP_HOST "192.168.137.1" //"3.109.235.50" //"3.110.42.33" //"ocpp.gridenpower.com" //
+#define OCPP_HOST "192.168.137.1"//"ocpp.gridenpower.com"//"65.2.90.45" //"3.109.235.50" //"3.110.42.33" // //
 #define OCPP_PORT 6630
-#define OCPP_URL "ws://192.168.137.1:6630/ocpp/GP001" //"ws://3.109.235.50:6630/ocpp/GP004" //"ws://ocpp.gridenpower.com:6630/ocpp/GP004" //"ws://3.110.42.33:6630/ocpp/GP004"
+#define OCPP_URL "ws://192.168.137.1:6630/ocpp/GP001"//"ws://ocpp.gridenpower.com:6630/ocpp/GP004"//"ws://65.2.90.45:6630/ocpp/CKSS0999" //"ws://3.109.235.50:6630/ocpp/GP004" //"ws://3.110.42.33:6630/ocpp/GP004"
 
 #define FILE_SERVER_URL "https://fileuploads.up.railway.app"
 
@@ -48,6 +43,7 @@
 MFRC522 mfrc522(SDA_SS_PIN, RST_PIN); // create instance of class
 MFRC522::MIFARE_Key key;
 LiquidCrystal_I2C lcd (0x27, 16,2);
+// ZMPT101B voltageSensor(26);
 // Pin Mapping
 #define Amperage_Pin 4 // modulated as PWM // ACS712
 
@@ -73,8 +69,9 @@ LiquidCrystal_I2C lcd (0x27, 16,2);
 #define SOS_pin 12
 #define SOS_pressed LOW
 #define SOS_unpressed HIGH
-#define volt_pin 26
+#define volt_pin 26 //ZMPT101B
 
+void chargetime();
 // variables declaration
 
 bool transaction_in_process = false; // Check if transaction is in-progress
@@ -101,15 +98,18 @@ int screen = 0;
  *SPI MOSI    MOSI         23
  *SPI MISO    MISO         19
  *SPI SCK     SCK          18
-
+ *Relay 1                  14
+ *Relay 2                  27
+ *EV_plug pin              36
+ *EV_charge pin            35
+ *SOS_pin                  12
 */
 
 // Setup Loop
 
 OcppSetup ocppsetup;
 ArduinoOcpp::Ocpp16::ChangeAvailability changeAva;
-// ArduinoOcpp::Ocpp16::TriggerMessage trig;
-// int HH = 0, MM = 0, S = 0;
+int HH = 0, MM = 0, S = 0;
 int freq = 5000;
 int RledChannel = 1;
 int GledChannel = 2;
@@ -148,8 +148,9 @@ void setup()
     millissec = millis();
     // pinMode(CHARGE_PERMISSION_LED, OUTPUT);
     // digitalWrite(CHARGE_PERMISSION_LED, CHARGE_PERMISSION_OFF);
-    pinMode(Amperage_Pin, OUTPUT);
-    pinMode(Amperage_Pin, OUTPUT);
+    pinMode(volt_pin,INPUT);
+    pinMode(Amperage_Pin, INPUT);
+    // pinMode(Amperage_Pin, OUTPUT);
     ledcSetup(0, 1000, 8); // channel=0, freq=1000Hz, range=(2^8)-1
     ledcAttachPin(Amperage_Pin, 0);
     ledcWrite(Amperage_Pin, 256); // 256 is constant +3.3V DC
@@ -293,14 +294,27 @@ void loop()
     }
 
     OCPP_loop();
-    if (millis() - millissec > 20000)
-    {
-        // status.StatusNotification();
-        // payload["Status"] = "StatusNotification";
-        // trig.processReq(payload["Status"]);
-        millissec = millis();
-    }
-    if (millis() - prev_millis > 500)
+    // reboot esp after 3 minutes
+    // if (millis() - millissec > 200000)
+    // {
+    //     if(ocppsetup.getStatus() == "Available")
+    //     {
+    //         ocppsetup.lcdClear();
+    //         while (digitalRead(EV_Plug_Pin) == EV_Plugged)
+    //         {
+    //             Serial.print(".");
+    //             ocppsetup.lcdPrint("Please Unplug your EV!!",0,0);
+    //             delay(5000);
+    //         }
+    //         ocppsetup.lcdClear();
+    //         millissec = millis();
+    //         ESP.restart();
+    //     }
+    //     else{
+    //     millissec = millis();
+    //     }
+    // }
+    if (millis() - prev_millis > 500)//display meter settings.
     {
         char *mtr;
         if (ocppsetup.getStatus() == "Available")
@@ -323,7 +337,7 @@ void loop()
         ocppsetup.lcdPrint(ntwk, 3, 16);
         prev_millis = millis();
     }
-    if (ocppsetup.getStatus() == "Available")
+    if (ocppsetup.getStatus() == "Available") // display welcome message.
     {
         ocppsetup.lcdPrint("Welcome To", 0, 2);
         ocppsetup.lcdPrint("Griden Point!!!!", 1, 0);
@@ -334,24 +348,40 @@ void loop()
         delay(500);
         digitalWrite(RELAY_1, HIGH);
         digitalWrite(RELAY_2, HIGH);
-        // HH = 00;
-        // MM = 00;
-        // S = 00;
+        HH = 0;
+        MM = 0;
+        S = 0;
     }
-    else if (ocppsetup.getStatus() == "Charging")
+    else if (ocppsetup.getStatus() == "Charging") //charging condition and relay turning on.
     {
         ocppsetup.ledChangeColour(0, 255, 0);
-        // if (was_available == true)
-        // {
+
         ocppsetup.lcdPrint("Charging Started", 0, 2);
         ocppsetup.lcdPrint("Time : ", 2, 0);
         ocppsetup.lcdPrint(payload["timestamp"], 2, 7);
         was_available = false;
         was_charging = true;
-        // }
+        
         digitalWrite(RELAY_1, LOW);
         digitalWrite(RELAY_2, LOW);
-        ocppsetup.chargetime();
+        // S++;  
+        // delay ( 1000 );  
+        // if ( S > 59 )  
+        // {  
+        //     MM++;  
+        //     S = 0;  
+        // }  
+        // if ( MM > 59 )  
+        // {  
+        //     HH++;  
+        //     MM = 0;  
+        // }  
+        // Serial.printf("\n %d : %d : %d",HH,MM,S);
+        // ocppsetup.lcdPrintint(HH, 2,7);
+        // ocppsetup.lcdPrint(":", 2,9);
+        // ocppsetup.lcdPrintint(MM, 2,10);
+        // ocppsetup.lcdPrint(":", 2,12);
+        // ocppsetup.lcdPrintint(S,2,13);
     }
     else if (ocppsetup.getStatus() == "SuspendedEVSE" || ocppsetup.getStatus() == "SuspendedEV" || ocppsetup.getStatus() == "Faulted" || ocppsetup.getStatus() == "available")
     {
@@ -360,10 +390,8 @@ void loop()
         digitalWrite(RELAY_1, HIGH);
         digitalWrite(RELAY_2, HIGH);
     }
-    else if (ocppsetup.getStatus() == "Unavailable" && digitalRead(SOS_pin) == SOS_pressed)
+    else if (ocppsetup.getStatus() == "Unavailable" && digitalRead(SOS_pin) == SOS_pressed)//sos button pressed condition
     {
-        // digitalWrite(RELAY_1, HIGH);
-        // digitalWrite(RELAY_2, HIGH);
         ocppsetup_ocpp.ledChangeColour(255, 0, 0);
         payload["status"] = "Rejected";
         transaction_in_process = false;
@@ -384,6 +412,7 @@ void loop()
         ocppsetup.lcdClear();
         screen = 0;
     }
+    // showing charge time on LCD screen.
     // if(ocppsetup.getStatus() == "Charging")
     // {
     //     S++;  
@@ -404,7 +433,6 @@ void loop()
     //     ocppsetup.lcdPrintint(MM, 2,10);
     //     ocppsetup.lcdPrint(":", 2,12);
     //     ocppsetup.lcdPrintint(S,2,13);
-
     // }
     // if(digitalRead(EV_Charge_Pin)==EV_Plugged && charge_EV == false)
     // {
@@ -413,7 +441,6 @@ void loop()
     // }
 
     // Reset Condition
-
     // loop when remote stop is executed
     if (isInSession() == false /*true*/ && transaction_in_process == true /*true*/ && evPlugged == EV_Plugged && digitalRead(EV_Plug_Pin) == EV_Plugged)
     {
@@ -494,15 +521,13 @@ void loop()
             if (digitalRead(EV_Plug_Pin) == EV_Plugged)
             {
                 ocppsetup.lcdClear();
-                // ocppsetup.lcdPrint("Card ID is ", 0, 2);
-                // ocppsetup.lcdPrint(idTag, 1, 0);
                 ocppsetup.buzz();
                 ocppsetup.lcdPrint("Card Readed ! ", 0, 1);
                 ocppsetup.lcdPrint("Authorizing... ", 1, 0);
                 delay(500);
                 ocppsetup.lcdClear();
                 authorize(idTag, [](JsonObject response)
-                          {
+                {
                 //check if user with idTag is authorized
                     if (!strcmp("Accepted", response["idTagInfo"]["status"] | "Invalid")){
                     ocppsetup.buzz();
@@ -531,21 +556,6 @@ void loop()
                     transaction_in_process = true;
                     delay(500);
                     ocppsetup.lcdClear();
-                    
-                // if (digitalRead(EV_Plug_Pin) == EV_Unplugged)
-                // {
-                //     ocppsetup.lcdClear();
-                //     ocppsetup.buzz();
-                //     do
-                //     {   
-
-                //         ocppsetup.lcdPrint("Please Connect", 1, 3);
-                //         ocppsetup.lcdPrint("Your EV !", 2, 3);
-                //         ocppsetup.lcdPrint("", 3, 0);
-                //     } while (digitalRead(EV_Plug_Pin) != EV_Plugged);
-                //     ocppsetup.lcdClear();
-                // return;
-                // }
                     
                     } else {
                         
@@ -658,20 +668,6 @@ void loop()
             ocppsetup.buzz();
             ESP.restart();
         }
-        // if (digitalRead(EV_Plug_Pin) == EV_Unplugged)
-        // {
-        //     ocppsetup.lcdClear();
-        //     ocppsetup.buzz();
-        //     do
-        //     {
-
-        //         ocppsetup.lcdPrint("Please Connect", 1, 3);
-        //         ocppsetup.lcdPrint("Your EV !", 2, 3);
-        //         ocppsetup.lcdPrint("", 3, 0);
-        //     } while (digitalRead(EV_Plug_Pin) != EV_Plugged);
-        //     ocppsetup.lcdClear();
-        //     return;
-        // }
         if (digitalRead(EV_Plug_Pin) == EV_Plugged && evPlugged == EV_Unplugged && getTransactionId() >= 0)
         {
             // transition unplugged -> plugged; Case A: transaction has already been initiated
@@ -688,7 +684,7 @@ void loop()
             char *idTag = new char[content2.length() + 1];
             strcpy(idTag, content2.c_str());
             startTransaction(idTag, [](JsonObject response)
-                             {
+                            {
                 // Callback: Central System has answered. Could flash a confirmation light here.
 
                 Serial.printf("[main] Started OCPP transaction. Status: %s, transactionId: %u\n",
@@ -742,7 +738,6 @@ void loop()
                 ocppsetup.ledChangeColour(0, 0, 0);
                 delay(500);
                 payload["status"] = "Rejected";
-                // Serial.println("Wrong ID tag");
                 ocppsetup.lcdClear();
                 return;
             }
@@ -752,13 +747,11 @@ void loop()
 
                 if (tran_id >= 0)
                 {
-                    // red
                     screen = 0;
                     stopTransaction([](JsonObject response)
                                     {
                                         // Callback: Central System has answered.
                                         Serial.print(F("[main] Stopped OCPP transaction\n")); });
-                    // blue
                     Serial.println("Done");
                     digitalRead(EV_Plug_Pin) == EV_Unplugged;
                     transaction_in_process = false;
@@ -786,5 +779,3 @@ void loop()
         }
     }
 }
-
-// Note:  sever disconnect error

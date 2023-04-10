@@ -30,7 +30,8 @@
 #define SOS_unpressed HIGH
 #define RELAY_1 14 // Relay1 pin
 #define RELAY_2 27 // Realy2 pin
-
+// #define Amperage_Pin 4 // modulated as PWM // ACS712
+// #define volt_pin 26 //ZMPT101B
 extern OcppSetup ocppsetup_ocpp;
 using ArduinoOcpp::OnReceiveConfListener;
 using ArduinoOcpp::OnReceiveReqListener;
@@ -138,6 +139,7 @@ void bootNotification(DynamicJsonDocument *payload, OnReceiveConfListener onConf
 void startTransaction(const char *idTag, OnReceiveConfListener onConf = nullptr, OnAbortListener onAbort = nullptr, OnTimeoutListener onTimeout = nullptr, OnReceiveErrorListener onError = nullptr, std::unique_ptr<Timeout> timeout = nullptr);
 
 void stopTransaction(OnReceiveConfListener onConf = nullptr, OnAbortListener onAbort = nullptr, OnTimeoutListener onTimeout = nullptr, OnReceiveErrorListener onError = nullptr, std::unique_ptr<Timeout> timeout = nullptr);
+
 
 /*
  * Access information about the internal state of the library
