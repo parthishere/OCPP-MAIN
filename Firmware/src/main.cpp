@@ -119,6 +119,7 @@ long int prev_millis;
 long int millissec;
 // bool connection_EV = false;
 // bool charge_EV = false;
+char previousstate;
 void setup()
 {
 
@@ -276,6 +277,11 @@ bool sent = false;
 void loop()
 {
 
+    const char *currentstate;
+    currentstate = ocppsetup.getStatus();
+    char currentstate1 = *currentstate;
+    
+
     JsonObject payload;
     if (initial_push == true)
     {
@@ -283,10 +289,13 @@ void loop()
         ocppsetup.sendCSVFile("parthishere:123");
         sent = true;
     }
-    if (digitalRead(LOG_BTN_PIN) == 0 && sent == false)
+    // if (digitalRead(LOG_BTN_PIN) == 0 && sent == false)
+    if (previousstate != currentstate1 && sent == false)
     {
+        // *previousstate = *currentstate;
         Serial.println("Server button pressed");
         initial_push = true;
+        previousstate = currentstate1;
     }
     if (digitalRead(LOG_BTN_PIN) == 1)
     {
