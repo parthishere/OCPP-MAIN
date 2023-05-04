@@ -277,7 +277,7 @@ void ConnectorStatus::addConnectorErrorCodeSampler(std::function<const char *()>
 
 void ConnectorStatus::saveState() {
     configuration_save();
-}
+} 
 
 void ConnectorStatus::setOnUnlockConnector(std::function<bool()> unlockConnector) {
     this->onUnlockConnector = unlockConnector;

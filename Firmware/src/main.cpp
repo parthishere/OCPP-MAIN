@@ -281,26 +281,25 @@ void loop()
     currentstate = ocppsetup.getStatus();
     char currentstate1 = *currentstate;
     
-
     JsonObject payload;
-    if (initial_push == true)
-    {
-        initial_push = false;
-        ocppsetup.sendCSVFile("parthishere:123");
-        sent = true;
-    }
-    // if (digitalRead(LOG_BTN_PIN) == 0 && sent == false)
-    if (previousstate != currentstate1 && sent == false)
-    {
-        // *previousstate = *currentstate;
-        Serial.println("Server button pressed");
-        initial_push = true;
-        previousstate = currentstate1;
-    }
-    if (digitalRead(LOG_BTN_PIN) == 1)
-    {
-        sent = false;
-    }
+    // if (initial_push == true)
+    // {
+    //     initial_push = false;
+        // ocppsetup.sendCSVFile("parthishere:123");
+    //     sent = true;
+    // }
+    // // if (digitalRead(LOG_BTN_PIN) == 0 && sent == false)
+    // if (previousstate != currentstate1 && sent == false)
+    // {
+    //     // *previousstate = *currentstate;
+    //     Serial.println("Server button pressed");
+    //     initial_push = true;
+    //     previousstate = currentstate1;
+    // }
+    // if (digitalRead(LOG_BTN_PIN) == 1)
+    // {
+    //     sent = false;
+    // }   
 
     OCPP_loop();
     // reboot esp after 3 minutes

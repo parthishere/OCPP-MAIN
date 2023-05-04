@@ -8,7 +8,7 @@
 #include "ArduinoOcpp.h"
 
 #ifndef AO_CUSTOM_WS
-
+int disconnecttime = 0;
 using namespace ArduinoOcpp;
 
 using namespace ArduinoOcpp::EspWiFi;
@@ -27,16 +27,18 @@ bool OcppClientSocket::sendTXT(std::string &out) {
 
 void OcppClientSocket::setReceiveTXTcallback(ReceiveTXTcallback &callback) {
     wsock->onEvent([callback](WStype_t type, uint8_t * payload, size_t length) {
+        
         switch (type) {
             case WStype_DISCONNECTED:
                 ocppsetup_ocpp.ServerDisconnect();
                 ocppsetup_ocpp.lcdClear();
-                ocppsetup_ocpp.lcdPrint("Disconnected to Server");
+                ocppsetup_ocpp.lcdPrint("Disconnected from",0,0);
+                ocppsetup_ocpp.lcdPrint("SERVER",1,0);
                 ocppsetup.buzz();
                 delay(1000);
                 ocppsetup_ocpp.lcdClear();
                 ocppsetup_ocpp.setServerStatus("ERR");
-    
+                disconnecttime++;
                 AO_DBG_INFO("Disconnected");
                 break;
             case WStype_CONNECTED:
@@ -48,7 +50,7 @@ void OcppClientSocket::setReceiveTXTcallback(ReceiveTXTcallback &callback) {
                 delay(1000);
                 ocppsetup_ocpp.lcdClear();
                 ocppsetup_ocpp.setServerStatus("CNT");
-                
+                disconnecttime = 0;
                 break;
             case WStype_TEXT:
                 AO_DBG_TRAFFIC_IN(payload);
@@ -72,6 +74,16 @@ void OcppClientSocket::setReceiveTXTcallback(ReceiveTXTcallback &callback) {
             default:
                 AO_DBG_WARN("Unsupported WebSocket event type");
                 break;
+        }
+        if(disconnecttime>=30)
+        {
+            if(ocppsetup.getStatus()=="Charging")
+            {
+                    stopTransaction([](JsonObject response)
+                                {
+                    //Callback: Central System has answered.
+                    Serial.print(F("Stopped OCPP transaction due to server disconnect\n")); });
+            }
         }
     });
 }
