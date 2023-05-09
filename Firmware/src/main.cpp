@@ -16,6 +16,7 @@
 #include <ArduinoOcpp/Core/OcppEngine.h>
 #include <ArduinoOcpp/MessagesV16/TriggerMessage.h>
 #include<LiquidCrystal_I2C.h>
+#include <SoftwareSerial.h>
 
 // WiFi connnection details
 #define SSID "ALIENWARE"
