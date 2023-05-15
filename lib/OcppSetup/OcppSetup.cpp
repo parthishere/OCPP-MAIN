@@ -134,7 +134,7 @@ void OcppSetup::lcdClear()
     lcd.clear();
 }
 
-void touchSetup(){
+void OcppSetup::touchSetup(){
     myPort.begin(115200, SWSERIAL_8N1, MYPORT_RX, MYPORT_TX, false);
     if (!myPort) {  // If the object did not initialize, then its configuration is invalid
         Serial.println("Invalid EspSoftwareSerial pin configuration, check config");
@@ -144,7 +144,7 @@ void touchSetup(){
     }
 }
 
-byte * touchRead(){
+byte * OcppSetup::touchRead(){
     while (myPort.available()) {
         read_signal = myPort.read();
         // Serial.print(read_signal, HEX);
@@ -204,11 +204,11 @@ byte * touchRead(){
 
 } 
 
-void _touchWrite(int value, byte address_h, byte address_l){
+void OcppSetup::_touchWrite(int value, byte address_h, byte address_l){
     byte array[8] = { 0x5a, 0xa5, 0x05, 0x82, address_h, address_l, 0x00};
 }
 
-void meterWrite(double WH, double V, double I){
+void OcppSetup::meterWrite(double WH, double V, double I){
     dwin_state(CHAR_GREEN);
     
     byte wh_write[8];
@@ -239,12 +239,13 @@ void meterWrite(double WH, double V, double I){
 
 
 
-void dwin_server_wifi(int strength_server, int strength_wifi){
+void OcppSetup::dwin_server_wifi(int strength_server){
     _touchWrite(strength_server, SERVER_MEM_H, SERVER_MEM_L);
-    _touchWrite(strength_wifi, WIFI_MEM_H, WIFI_MEM_L);
+    int wifi = map(WiFi.RSSI(), 0,50, 0, 5);
+    _touchWrite(wifi, WIFI_MEM_H, WIFI_MEM_L);
 }
 
-void dwin_main(int value){
+void OcppSetup::dwin_main(int value){
     
     switch(value){
         case UNAUTHENTICATED_MAIN:
@@ -269,14 +270,14 @@ void dwin_main(int value){
     }
 }
 
-void dwin_rfid(bool auth){
+void OcppSetup::dwin_rfid(bool auth){
     int hey = auth == true? 1 : 2;
     _touchWrite(hey, RFID_MEM_H, RFID_MEM_L);
     int main = auth == true ? AUTHENTICATED_MAIN: UNAUTHENTICATED_MAIN;
     dwin_main(main);
 }
 
- void dwin_state(int value){
+ void OcppSetup::dwin_state(int value){
     switch(value){
         case BLANK_GREEN:
             _touchWrite(BLANK_GREEN, STATE_MEM_H, STATE_MEM_L);

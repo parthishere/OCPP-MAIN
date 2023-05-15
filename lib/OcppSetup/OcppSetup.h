@@ -154,9 +154,9 @@ public:
     void lcdPrintint(int msg, int x, int y);
 
     void touchSetup();
-    int * touchRead();
+    byte * touchRead();
     void meterWrite(double WH, double V, double I);
-    void dwin_server_wifi(int strength_server, int strength_wifi);
+    void dwin_server_wifi(int strength_server);
     void dwin_rfid(bool auth);
     void dwin_state(int value);
     void dwin_main(int value);
