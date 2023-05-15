@@ -20,7 +20,7 @@ void testFileIO(fs::FS &fs, const char *path);
 namespace Parth
 {
     // LiquidCrystal_I2C lcd(0x27, 20, 4);
-    
+
     EspSoftwareSerial::UART myPort;
     int RledChannel = 1;
     int GledChannel = 2;
@@ -30,7 +30,9 @@ namespace Parth
 using namespace Parth;
 
 // bool initialized_lcd = false;
-// bool initialized_led = false;
+bool touchsetup = false;
+
+bool initialized_led = false;
 // bool connection_EV = false;
 // bool charge_EV = false;
 char *ssid;

@@ -34,6 +34,7 @@ void OcppClientSocket::setReceiveTXTcallback(ReceiveTXTcallback &callback) {
                 // ocppsetup_ocpp.lcdClear();
                 // ocppsetup_ocpp.lcdPrint("Disconnected from",0,0);
                 // ocppsetup_ocpp.lcdPrint("SERVER",1,0);
+                ocppsetup.dwin_server_wifi(1);
                 ocppsetup.buzz();
                 delay(1000);
                 // ocppsetup_ocpp.lcdClear();
@@ -46,6 +47,7 @@ void OcppClientSocket::setReceiveTXTcallback(ReceiveTXTcallback &callback) {
                 ocppsetup_ocpp.ServerConnect();
                 // ocppsetup_ocpp.lcdClear();
                 // ocppsetup_ocpp.lcdPrint("Connected to Server");
+                ocppsetup.dwin_server_wifi(0);
                 ocppsetup.buzz();
                 delay(1000);
                 // ocppsetup_ocpp.lcdClear();

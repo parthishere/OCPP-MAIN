@@ -138,6 +138,7 @@ void setup()
     pinMode(BUZZER_PIN, OUTPUT);
 
     // ocppsetup.lcdInitialize();
+    ocppsetup.touchSetup();
     ledcSetup(RledChannel, 1000, 8);
     ledcSetup(GledChannel, 1000, 8);
     ledcSetup(BledChannel, 1000, 8);
@@ -172,6 +173,7 @@ void setup()
     }
     // ocppsetup.lcdClear();
     // ocppsetup.lcdPrint("Connected to WiFi", 0, 0);
+
     ocppsetup.buzz();
     /*------------------------------Wifi Connection Over ---------------------------*/
 
@@ -352,6 +354,7 @@ void loop()
         // ocppsetup.lcdPrint("Griden Point!!!!", 1, 0);
         // ocppsetup.lcdPrint("MTR: ", 3, 0);
         // ocppsetup.lcdPrint("                    ", 2, 0);
+        ocppsetup.dwin_state(1);
         ocppsetup.ledChangeColour(0, 0, 255);
         was_available = true;
         delay(500);
@@ -364,7 +367,7 @@ void loop()
     else if (ocppsetup.getStatus() == "Charging") //charging condition and relay turning on.
     {
         ocppsetup.ledChangeColour(0, 255, 0);
-
+        ocppsetup.dwin_state(2);
         // ocppsetup.lcdPrint("Charging Started", 0, 2);
         // ocppsetup.lcdPrint("Time : ", 2, 0);
         // ocppsetup.lcdPrint(payload["timestamp"], 2, 7);
@@ -484,6 +487,7 @@ void loop()
         // ocppsetup.lcdClear();
         ocppsetup.buzz();
         // ocppsetup.lcdPrint("Card not readed");
+        ocppsetup.dwin_rfid(false);
         return;
     }
     else if (transaction_in_process == false) // && isInSession() == false)
@@ -545,7 +549,8 @@ void loop()
                     // ocppsetup.lcdPrint("",1, 0);
                     // ocppsetup.lcdPrint("User is Authorized", 2, 0);
                     // ocppsetup.lcdPrint("to Start Charging", 3, 0);
-                    
+                    ocppsetup.dwin_rfid(true);
+                    ocppsetup.dwin_main(2);
                     Serial.println(F("[main] User is authorized to start charging"));
                     ocppsetup.ledChangeColour(0, 255, 0);
                     delay(500);
@@ -578,7 +583,8 @@ void loop()
                         // ocppsetup.lcdPrint("",1, 0);
                         // ocppsetup.lcdPrint("Status ", 2, 0);
                         // ocppsetup.lcdPrint(st, 3, 0);
-
+                        ocppsetup.dwin_rfid(false);
+                        ocppsetup.dwin_main(1);
                         ocppsetup.ledChangeColour(255, 0, 0);
                         delay(500);
                         ocppsetup.ledChangeColour(0, 0, 0);

@@ -13,6 +13,8 @@
 #include <ArduinoOcpp/MessagesV16/StopTransaction.h>
 #include <ZMPT101B.h>
 #include <ACS712.h>
+#include <iostream>
+#include <string>
 
 using ArduinoOcpp::Ocpp16::MeterValues;
 int t = 1;
@@ -110,11 +112,13 @@ std::unique_ptr<DynamicJsonDocument> MeterValues::createReq()
                 char buffer[1000];
                 sprintf(buffer, "%.3f", temp_value_int);
                 temp_value = buffer;
+
+                double double_value = strtod(temp_value, nullptr);
                 // ocppsetup.lcdPrint("               ", 1, 5);
                 // ocppsetup.lcdPrint("Wh : ", 1, 0);
                 // ocppsetup.lcdPrint(temp_value, 1, 5);
                 // ocppsetup.lcdPrint("MTR: ", 3, 0);
-
+                ocppsetup.meterWrite(double_value, 00,00);
                 sampledValue_1["value"] = temp_value;
                 sampledValue_1["measurand"] = "Energy.Active.Import.Register";
                 sampledValue_1["unit"] = "Wh";
@@ -124,11 +128,12 @@ std::unique_ptr<DynamicJsonDocument> MeterValues::createReq()
                 char buffer[1000];
                 sprintf(buffer, "%.3f", temp_value_int);
                 temp_value = buffer;
+                double double_value = strtod(temp_value, nullptr);
                 // ocppsetup.lcdPrint("               ", 1, 5);
                 // ocppsetup.lcdPrint("Wh : ", 1, 0);
                 // ocppsetup.lcdPrint(temp_value, 1, 5);
                 // ocppsetup.lcdPrint("MTR: ", 3, 0);
-
+                ocppsetup.meterWrite(double_value, 00,00);
                 sampledValue_1["value"] = temp_value;
                 sampledValue_1["measurand"] = "Energy.Active.Import.Register";
                 sampledValue_1["unit"] = "Wh";
