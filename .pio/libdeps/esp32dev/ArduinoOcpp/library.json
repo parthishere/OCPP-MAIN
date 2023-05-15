@@ -1,0 +1,79 @@
+{
+    "name": "ArduinoOcpp",
+    "version": "0.1.0",
+    "description": "OCPP 1.6 Client for the ESP8266 and ESP32",
+    "keywords": "OCPP, 1.6, OCPP 1.6, Smart Energy, Smart Charging, client, ESP8266, ESP32, Arduino, EVSE, Charge Point",
+    "repository":
+    {
+        "type": "git",
+        "url": "https://github.com/matth-x/ArduinoOcpp/"
+    },
+    "authors":
+    [
+      {
+        "name": "Matthias Akstaller",
+        "url": "https://www.arduino-ocpp.com",
+        "maintainer": true
+      }
+    ],
+    "license": "MIT",
+    "homepage": "https://www.arduino-ocpp.com",
+    "dependencies": [
+        {
+            "owner": "bblanchon",
+            "name": "ArduinoJson",
+            "version": "6.19.1"
+        },
+        {
+            "owner": "links2004",
+            "name": "WebSockets",
+            "version": "2.3.6"
+        },
+        {
+            "owner": "lorol",
+            "name": "LittleFS_esp32",
+            "version": "1.0.5",
+            "platforms": ["espressif32"]
+        }
+      ],
+    "frameworks": "arduino",
+    "platforms": "espressif8266, espressif32",
+
+    "export": {
+        "include":
+        [
+            "src/*",
+            "examples/*",
+            "platformio.ini",
+            "library.json",
+            "README.md",
+            "LICENSE"
+        ],
+        "exclude":
+        [
+            "src/sdkconfig*",
+            "examples/SECC/WiFiManager*",
+            "examples/CompatibilityTest",
+            "src/main.cpp"
+        ]
+    },
+
+    "examples": [
+      {
+          "name": "Basic OCPP connection",
+          "base": "examples/ESP",
+          "files": [
+              "main.cpp"
+          ]
+      },
+      {
+        "name": "EVSE Communications Controller",
+        "base": "examples/SECC",
+        "files": [
+            "main.cpp",
+            "platformio.ini",
+            "README.md"
+        ]
+    }
+  ]
+  }
