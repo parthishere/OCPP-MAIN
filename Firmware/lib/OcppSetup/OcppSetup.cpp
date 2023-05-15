@@ -20,6 +20,7 @@ void testFileIO(fs::FS &fs, const char *path);
 namespace Parth
 {
     LiquidCrystal_I2C lcd(0x27, 20, 4);
+    EspSoftwareSerial::UART myPort;
     int RledChannel = 1;
     int GledChannel = 2;
     int BledChannel = 3;
@@ -50,6 +51,13 @@ char timeHour[10];
 char timeDay[10];
 char timeMonth[10];
 char timeYear[5];
+
+byte read_signal;
+byte tdata[200];
+int count_for_data;
+int len_of_data;
+bool start_count;
+byte address[2];
 
 static char *status = "null";
 static char *meter_value = "null";
@@ -125,6 +133,167 @@ void OcppSetup::lcdClear()
 {
     lcd.clear();
 }
+
+void touchSetup(){
+    myPort.begin(115200, SWSERIAL_8N1, MYPORT_RX, MYPORT_TX, false);
+    if (!myPort) {  // If the object did not initialize, then its configuration is invalid
+        Serial.println("Invalid EspSoftwareSerial pin configuration, check config");
+        while (1) {  // Don't continue with invalid configuration
+        delay(1000);
+        }
+    }
+}
+
+byte * touchRead(){
+    while (myPort.available()) {
+        read_signal = myPort.read();
+        // Serial.print(read_signal, HEX);
+        // Serial.print(" ");
+        if (read_signal == 0x5a) {
+        start_count = true;
+        }
+        if (start_count == true) {
+        count_for_data++;
+        }
+
+        if (count == 3) {
+        len_of_data = read_signal;  //05
+        }
+
+        else if (count > 4) {
+        tdata[len_of_data - 3];
+        for (int i = 0; i < len_of_data - 2; i++) {
+
+            if (i == 0) {
+            
+            while (!myPort.available())
+                ;
+            address[1] = myPort.read();
+            } else if (i == 1) {
+            while (!myPort.available())
+                ;
+            address[0] = myPort.read();
+            }  else if(i>1) {
+            while (!myPort.available())
+                ;
+            tdata[i - 2] = myPort.read();
+            }
+        }
+        start_count = false;
+        count = 0;
+
+        Serial.print("Address: ");
+        for (int i = 0; i < 2; i++) {
+            Serial.print(address[i], HEX);
+            Serial.print(" ");
+        }
+        Serial.println();
+        
+        Serial.print("Data: ");
+        for (int i = 0; i < len_of_data - 3 - 1; i++) {
+            Serial.print(tdata[i], HEX);
+            Serial.print(" ");
+        }
+        Serial.println();
+        Serial.println();
+        
+        }
+    }
+
+    return address, tdata;
+
+} 
+
+void _touchWrite(int value, byte address_h, byte address_l){
+    byte array[8] = { 0x5a, 0xa5, 0x05, 0x82, address_h, address_l, 0x00};
+}
+
+void meterWrite(double WH, double V, double I){
+    dwin_state(CHAR_GREEN);
+    
+    byte wh_write[8];
+    byte * wh = reinterpret_cast<byte*> (&WH);
+    memcpy(wh_write, wh, 8);
+    byte array_wh[14] = { 0x5a, 0xa5, 0x0b, 0x82, WH_MEM_H, WH_MEM_L, wh_write[7], wh_write[6], wh_write[5], wh_write[4], wh_write[3], wh_write[2], wh_write[1], wh_write[0]};
+
+    myPort.write(array_wh, 14);
+
+
+    byte v_write[8];
+    byte * v = reinterpret_cast<byte*> (&V);
+    memcpy(v_write, v, 8);
+    byte array_v[14] = { 0x5a, 0xa5, 0x0b, 0x82, V_MEM_H, V_MEM_L, v_write[7], v_write[6], v_write[5], v_write[4], v_write[3], v_write[2], v_write[1], v_write[0]};
+
+    myPort.write(array_v, 14);
+
+
+    byte i_write[8];
+    byte * i = reinterpret_cast<byte*> (&I);
+    memcpy(i_write, i, 8);
+    byte array_i[14] = { 0x5a, 0xa5, 0x0b, 0x82, I_MEM_H, I_MEM_L, i_write[7], i_write[6], i_write[5], i_write[4], i_write[3], i_write[2], i_write[1], i_write[0]};
+
+    myPort.write(array_i, 14);
+    
+
+}
+
+
+
+void dwin_server_wifi(int strength_server, int strength_wifi){
+    _touchWrite(strength_server, SERVER_MEM_H, SERVER_MEM_L);
+    _touchWrite(strength_wifi, WIFI_MEM_H, WIFI_MEM_L);
+}
+
+void dwin_main(int value){
+    
+    switch(value){
+        case UNAUTHENTICATED_MAIN:
+            _touchWrite(UNAUTHENTICATED_MAIN, MAIN_MEM_H, MAIN_MEM_L);
+            break;
+         case AUTHENTICATED_MAIN:
+            _touchWrite(AUTHENTICATED_MAIN, MAIN_MEM_H, MAIN_MEM_L);
+            break;
+         case BLANK_MAIN:
+            _touchWrite(BLANK_MAIN, MAIN_MEM_H, MAIN_MEM_L);
+            break;
+         case THANKYOU_MAIN:
+            _touchWrite(THANKYOU_MAIN, MAIN_MEM_H, MAIN_MEM_L);
+            break;
+        case SOS_MAIN:
+            _touchWrite(SOS_MAIN, MAIN_MEM_H, MAIN_MEM_L);
+            break;
+        case MOREINFO_MAIN:
+            _touchWrite(MOREINFO_MAIN, MAIN_MEM_H, MAIN_MEM_L);
+            break;
+
+    }
+}
+
+void dwin_rfid(bool auth){
+    int hey = auth == true? 1 : 2;
+    _touchWrite(hey, RFID_MEM_H, RFID_MEM_L);
+    int main = auth == true ? AUTHENTICATED_MAIN: UNAUTHENTICATED_MAIN;
+    dwin_main(main);
+}
+
+ void dwin_state(int value){
+    switch(value){
+        case BLANK_GREEN:
+            _touchWrite(BLANK_GREEN, STATE_MEM_H, STATE_MEM_L);
+            break;
+         case AVL_GREEN:
+            _touchWrite(AVL_GREEN, STATE_MEM_H, STATE_MEM_L);
+            break;
+         case CHAR_GREEN:
+            _touchWrite(CHAR_GREEN, STATE_MEM_H, STATE_MEM_L);
+            break;
+         case PRE_GREEN:
+            _touchWrite(PRE_GREEN, STATE_MEM_H, STATE_MEM_L);
+            break;
+    }
+ }
+
+
 
 void listDir(fs::FS &fs, const char *dirname, uint8_t levels)
 {

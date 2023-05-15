@@ -9,7 +9,7 @@
 #include <Ticker.h>
 // MFRC522 library
 #include <SPI.h>
-
+#include <SoftwareSerial.h>
 #include <WiFi.h>
 #include <FS.h>
 
@@ -46,11 +46,66 @@
 #define FORMAT_SPIFFS_IF_FAILED true
 #define BUZZER_PIN 2
 
+
+#define MYPORT_TX 21
+#define MYPORT_RX 22
+
+
+#define WIFI_MEM_H 0x11
+#define WIFI_MEM_L 0x00
+
+#define RFID_MEM_H 0x10
+#define RFID_MEM_L 0x00
+
+#define SERVER_MEM_H 0x12
+#define SERVER_MEM_L 0x00
+
+#define STATE_MEM_H 0x13
+#define STATE_MEM_L 0x00
+
+#define QR_MEM_H 0x14
+#define QR_MEM_L 0x00
+
+#define MAIN_MEM_H 0x15
+#define MAIN_MEM_L 0x00
+
+#define WH_MEM_H 0x16
+#define WH_MEM_L 0X00
+
+#define V_MEM_H 0x17
+#define V_MEM_L 0x00
+
+#define I_MEM_H 0x18
+#define I_MEM_L 0x00
+
+#define TIME_MEM_H 0x19
+#define TIME_MEM_L 0x00
+
+
+#define UNAUTHENTICATED_MAIN 1
+#define AUTHENTICATED_MAIN 0
+#define BLANK_MAIN 2
+#define THANKYOU_MAIN 3
+#define SOS_MAIN 4
+#define MOREINFO_MAIN 5
+
+
+#define BLANK_GREEN 0
+#define AVL_GREEN 1
+#define CHAR_GREEN 2
+#define PRE_GREEN 3
+
+
 // extern bool connection_EV;
 // extern bool charge_EV;
 
 class OcppSetup
 {
+
+private:
+    void _touchWrite(int value, byte address_h, byte address_l);
+    
+    
 
 public:
     bool server_disconnected_file_management;
@@ -82,6 +137,13 @@ public:
     Ticker onceTicker;
 
     int screen;
+
+    byte read_signal;
+    byte tdata[200];
+    int count_for_data;
+    int len_of_data;
+    bool start_count;
+    byte address[2];
     // int S=0,HH=0,MM=0;
     void ledChangeColour(int R, int G, int B);
 
@@ -90,6 +152,14 @@ public:
     void lcdPrint(const char *msg);
     void lcdClear();
     void lcdPrintint(int msg, int x, int y);
+
+    void touchSetup();
+    int * touchRead();
+    void meterWrite(double WH, double V, double I);
+    void dwin_server_wifi(int strength_server, int strength_wifi);
+    void dwin_rfid(bool auth);
+    void dwin_state(int value);
+    void dwin_main(int value);
 
     void fileManageInitialize(const char *ssid, const char *pass);
     void ServerDisconnect();
@@ -115,6 +185,8 @@ public:
     void buzz();
     void buzzcontinue();
     void buzzstop();
+
+    
 };
 
 extern OcppSetup ocppsetup;

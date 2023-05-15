@@ -1,5 +1,7 @@
 {
     "files.associations": {
+        "*.excalidraw": "json",
+        "*.excalidrawlib": "json",
         "atomic": "cpp",
         "*.tcc": "cpp",
         "deque": "cpp",
@@ -17,6 +19,7 @@
         "string_view": "cpp",
         "initializer_list": "cpp",
         "iomanip": "cpp",
-        "ostream": "cpp"
+        "ostream": "cpp",
+        "cstddef": "cpp"
     }
 }
