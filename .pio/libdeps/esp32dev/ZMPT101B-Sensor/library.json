@@ -1,0 +1,11 @@
+{
+	"name": "ZMPT101B-Sensor",
+	"description": "An Arduino library to interact with the ZMPT101B Voltage sensor.",
+	"keywords": "ZMPT101B, RMS, voltage measuring, power monitoring",
+	"version": "1.0.1",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/r3mko/ZMPT101B"
+	},
+	"platforms": ["atmelavr", "espressif8266", "espressif32"]
+}
