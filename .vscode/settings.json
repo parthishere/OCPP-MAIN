@@ -1,0 +1,25 @@
+{
+    "files.associations": {
+        "*.excalidraw": "json",
+        "*.excalidrawlib": "json",
+        "atomic": "cpp",
+        "*.tcc": "cpp",
+        "deque": "cpp",
+        "string": "cpp",
+        "unordered_map": "cpp",
+        "unordered_set": "cpp",
+        "vector": "cpp",
+        "fstream": "cpp",
+        "limits": "cpp",
+        "sstream": "cpp",
+        "system_error": "cpp",
+        "random": "cpp",
+        "algorithm": "cpp",
+        "array": "cpp",
+        "string_view": "cpp",
+        "initializer_list": "cpp",
+        "iomanip": "cpp",
+        "ostream": "cpp",
+        "cstddef": "cpp"
+    }
+}
