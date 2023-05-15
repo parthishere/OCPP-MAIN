@@ -60,7 +60,7 @@ void OCPP_initialize(const char *CS_hostname, uint16_t CS_port, const char *CS_u
     if (!webSocket)
         webSocket = new WebSocketsClient();
 
-    ocppsetup_ocpp.lcdInitialize();
+    // ocppsetup_ocpp.lcdInitialize();
     ocppsetup_ocpp.fileManageInitialize("ALIENWARE", "He@ven$heth05");
 
     // server address, port and URL
@@ -165,20 +165,20 @@ void OCPP_loop() {
         if (digitalRead(EV_Plug_Pin) == EV_Plugged)
         {
             ocppsetup.buzzcontinue();
-            ocppsetup.lcdClear();
+            // ocppsetup.lcdClear();
             do
             {
                 delay(500);
-                ocppsetup.lcdPrint("Please Unplug ", 1, 0);
-                ocppsetup.lcdPrint("Your EV !! ", 2, 0);
-                ocppsetup.lcdPrint("", 1, 0);
+                // ocppsetup.lcdPrint("Please Unplug ", 1, 0);
+                // ocppsetup.lcdPrint("Your EV !! ", 2, 0);
+                // ocppsetup.lcdPrint("", 1, 0);
 
                 AO_DBG_INFO("PLease unplug your EV");
                 delay(2000);
             } while (digitalRead(EV_Plug_Pin) != EV_Unplugged);
         }
-        ocppsetup.lcdClear();
-        ocppsetup.lcdPrint("SOS PRESSED !!",1,2);
+        // ocppsetup.lcdClear();
+        // ocppsetup.lcdPrint("SOS PRESSED !!",1,2);
         bool available = false;
         ocppsetup.buzzcontinue();
         auto& model = ocppEngine->getOcppModel();

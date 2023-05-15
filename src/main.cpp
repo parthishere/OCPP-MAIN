@@ -43,7 +43,7 @@
 
 MFRC522 mfrc522(SDA_SS_PIN, RST_PIN); // create instance of class
 MFRC522::MIFARE_Key key;
-LiquidCrystal_I2C lcd (0x27, 16,2);
+// LiquidCrystal_I2C lcd (0x27, 16,2);
 // ZMPT101B voltageSensor(26);
 // Pin Mapping
 #define Amperage_Pin 4 // modulated as PWM // ACS712
@@ -137,7 +137,7 @@ void setup()
 
     pinMode(BUZZER_PIN, OUTPUT);
 
-    ocppsetup.lcdInitialize();
+    // ocppsetup.lcdInitialize();
     ledcSetup(RledChannel, 1000, 8);
     ledcSetup(GledChannel, 1000, 8);
     ledcSetup(BledChannel, 1000, 8);
@@ -160,8 +160,8 @@ void setup()
     /*------------------------------Initializing Wifi connection ---------------------------*/
     // Wifi connection procedure
     Serial.print(F("Wait for Wifi to connect : "));
-    ocppsetup.lcdClear();
-    ocppsetup.lcdPrint("Waiting for Wifi to connect");
+    // ocppsetup.lcdClear();
+    // ocppsetup.lcdPrint("Waiting for Wifi to connect");
 
     WiFi.begin(SSID, Password);
 
@@ -170,8 +170,8 @@ void setup()
         Serial.print("..");
         delay(1000);
     }
-    ocppsetup.lcdClear();
-    ocppsetup.lcdPrint("Connected to WiFi", 0, 0);
+    // ocppsetup.lcdClear();
+    // ocppsetup.lcdPrint("Connected to WiFi", 0, 0);
     ocppsetup.buzz();
     /*------------------------------Wifi Connection Over ---------------------------*/
 
@@ -340,18 +340,18 @@ void loop()
             mtr = "ERR"; //"UNA";
         else if (ocppsetup.getStatus() == "Faulted")
             mtr = "ERR"; //"FAULT";
-        ocppsetup.lcdPrint(mtr, 3, 5);
-        ocppsetup.lcdPrint("NTWK: ", 3, 10);
+        // ocppsetup.lcdPrint(mtr, 3, 5);
+        // ocppsetup.lcdPrint("NTWK: ", 3, 10);
         const char *ntwk = ((WiFi.status() == WL_CONNECTED) ? "OK" : "ERR");
-        ocppsetup.lcdPrint(ntwk, 3, 16);
+        // ocppsetup.lcdPrint(ntwk, 3, 16);
         prev_millis = millis();
     }
     if (ocppsetup.getStatus() == "Available") // display welcome message.
     {
-        ocppsetup.lcdPrint("Welcome To", 0, 2);
-        ocppsetup.lcdPrint("Griden Point!!!!", 1, 0);
-        ocppsetup.lcdPrint("MTR: ", 3, 0);
-        ocppsetup.lcdPrint("                    ", 2, 0);
+        // ocppsetup.lcdPrint("Welcome To", 0, 2);
+        // ocppsetup.lcdPrint("Griden Point!!!!", 1, 0);
+        // ocppsetup.lcdPrint("MTR: ", 3, 0);
+        // ocppsetup.lcdPrint("                    ", 2, 0);
         ocppsetup.ledChangeColour(0, 0, 255);
         was_available = true;
         delay(500);
@@ -365,9 +365,9 @@ void loop()
     {
         ocppsetup.ledChangeColour(0, 255, 0);
 
-        ocppsetup.lcdPrint("Charging Started", 0, 2);
-        ocppsetup.lcdPrint("Time : ", 2, 0);
-        ocppsetup.lcdPrint(payload["timestamp"], 2, 7);
+        // ocppsetup.lcdPrint("Charging Started", 0, 2);
+        // ocppsetup.lcdPrint("Time : ", 2, 0);
+        // ocppsetup.lcdPrint(payload["timestamp"], 2, 7);
         was_available = false;
         was_charging = true;
         
@@ -406,19 +406,19 @@ void loop()
         transaction_in_process = false;
         tran_id = -1;
         evPlugged = EV_Unplugged;
-        ocppsetup.lcdClear();
+        // ocppsetup.lcdClear();
     }
     // To clear the screen after every transaction
     if (ocppsetup.getStatus() == "Available" && screen == 0)
     {
         Serial.println("inside screen clear after stop transaction");
-        ocppsetup.lcdClear();
+        // ocppsetup.lcdClear();
         screen = 1;
     }
     if (ocppsetup.getStatus() == "Charging" && screen == 1)
     {
         Serial.println("Inside screen clear after starting charging");
-        ocppsetup.lcdClear();
+        // ocppsetup.lcdClear();
         screen = 0;
     }
     // showing charge time on LCD screen.
@@ -481,9 +481,9 @@ void loop()
     else if (!mfrc522.PICC_ReadCardSerial() && transaction_in_process == false)
     {
         Serial.println("Card not readed");
-        ocppsetup.lcdClear();
+        // ocppsetup.lcdClear();
         ocppsetup.buzz();
-        ocppsetup.lcdPrint("Card not readed");
+        // ocppsetup.lcdPrint("Card not readed");
         return;
     }
     else if (transaction_in_process == false) // && isInSession() == false)
@@ -499,9 +499,9 @@ void loop()
         {
             Serial.println(F("Your tag is not of type MIFARE Classic."));
             ocppsetup.buzz();
-            ocppsetup.lcdClear();
-            ocppsetup.lcdPrint("Your tag is not of", 0, 0);
-            ocppsetup.lcdPrint("type MIFARE Classic.", 1, 0);
+            // ocppsetup.lcdClear();
+            // ocppsetup.lcdPrint("Your tag is not of", 0, 0);
+            // ocppsetup.lcdPrint("type MIFARE Classic.", 1, 0);
             return;
         }
 
@@ -529,22 +529,22 @@ void loop()
         {
             if (digitalRead(EV_Plug_Pin) == EV_Plugged)
             {
-                ocppsetup.lcdClear();
+                // ocppsetup.lcdClear();
                 ocppsetup.buzz();
-                ocppsetup.lcdPrint("Card Readed ! ", 0, 1);
-                ocppsetup.lcdPrint("Authorizing... ", 1, 0);
+                // ocppsetup.lcdPrint("Card Readed ! ", 0, 1);
+                // ocppsetup.lcdPrint("Authorizing... ", 1, 0);
                 delay(500);
-                ocppsetup.lcdClear();
+                // ocppsetup.lcdClear();
                 authorize(idTag, [](JsonObject response)
                 {
                 //check if user with idTag is authorized
                     if (!strcmp("Accepted", response["idTagInfo"]["status"] | "Invalid")){
                     ocppsetup.buzz();
-                    ocppsetup.lcdClear();
-                    ocppsetup.lcdPrint("Card Accepted", 0, 3);
-                    ocppsetup.lcdPrint("",1, 0);
-                    ocppsetup.lcdPrint("User is Authorized", 2, 0);
-                    ocppsetup.lcdPrint("to Start Charging", 3, 0);
+                    // ocppsetup.lcdClear();
+                    // ocppsetup.lcdPrint("Card Accepted", 0, 3);
+                    // ocppsetup.lcdPrint("",1, 0);
+                    // ocppsetup.lcdPrint("User is Authorized", 2, 0);
+                    // ocppsetup.lcdPrint("to Start Charging", 3, 0);
                     
                     Serial.println(F("[main] User is authorized to start charging"));
                     ocppsetup.ledChangeColour(0, 255, 0);
@@ -564,7 +564,7 @@ void loop()
                     ocppsetup.ledChangeColour(0, 0, 0);
                     transaction_in_process = true;
                     delay(500);
-                    ocppsetup.lcdClear();
+                    // ocppsetup.lcdClear();
                     
                     } else {
                         
@@ -572,10 +572,10 @@ void loop()
                         Serial.printf("[main] Authorize denied. Reason: %s\n", response["idTagInfo"]["status"] | "");
                         // char *st =response["status"];
                         ocppsetup.buzz();
-                        ocppsetup.lcdClear();
+                        // ocppsetup.lcdClear();
                         
-                        ocppsetup.lcdPrint("Card Denied", 0, 5);
-                        ocppsetup.lcdPrint("",1, 0);
+                        // ocppsetup.lcdPrint("Card Denied", 0, 5);
+                        // ocppsetup.lcdPrint("",1, 0);
                         // ocppsetup.lcdPrint("Status ", 2, 0);
                         // ocppsetup.lcdPrint(st, 3, 0);
 
@@ -595,7 +595,7 @@ void loop()
                         delay(500);
                         ocppsetup.ledChangeColour(0, 0, 0);
                         delay(500);
-                        ocppsetup.lcdClear();
+                        // ocppsetup.lcdClear();
                         } });
 
                 Serial.printf("[main] Authorizing user with idTag %s\n", idTag);
@@ -622,15 +622,15 @@ void loop()
             }
             else
             {
-                ocppsetup.lcdClear();
-                ocppsetup.lcdPrint("Please Plug in your", 0, 0);
-                ocppsetup.lcdPrint("EV then try again!", 1, 0);
+                // ocppsetup.lcdClear();
+                // ocppsetup.lcdPrint("Please Plug in your", 0, 0);
+                // ocppsetup.lcdPrint("EV then try again!", 1, 0);
                 ocppsetup.ledChangeColour(255, 0, 0);
                 AO_DBG_INFO("PLease plug in your EV then try again!");
                 payload["status"] = "Rejected";
                 ocppsetup.buzz();
                 delay(2000);
-                ocppsetup.lcdClear();
+                // ocppsetup.lcdClear();
                 return;
             }
         }
@@ -640,11 +640,11 @@ void loop()
             Serial.println(F("[main] User is not authorized to start charging reason: Transaction in process"));
             AO_DBG_INFO("No connector to start transaction");
             ocppsetup.buzz();
-            ocppsetup.lcdClear();
+            // ocppsetup.lcdClear();
 
-            ocppsetup.lcdPrint("No Connector ", 0, 0);
-            ocppsetup.lcdPrint("is Available", 1, 0);
-            ocppsetup.lcdPrint("to Start Charging!!", 2, 0);
+            // ocppsetup.lcdPrint("No Connector ", 0, 0);
+            // ocppsetup.lcdPrint("is Available", 1, 0);
+            // ocppsetup.lcdPrint("to Start Charging!!", 2, 0);
 
             ocppsetup.ledChangeColour(255, 0, 0);
             delay(500);
@@ -663,7 +663,7 @@ void loop()
             ocppsetup.ledChangeColour(0, 0, 0);
             delay(500);
 
-            ocppsetup.lcdClear();
+            // ocppsetup.lcdClear();
             payload["status"] = "Rejected";
         }
     }
@@ -724,11 +724,11 @@ void loop()
             {
                 Serial.println("No connector to start transaction");
                 AO_DBG_INFO("No connector to start transaction");
-                ocppsetup.lcdClear();
+                // ocppsetup.lcdClear();
 
-                ocppsetup.lcdPrint("No Connector ", 0, 0);
-                ocppsetup.lcdPrint("is Available", 1, 0);
-                ocppsetup.lcdPrint("to Start Charging!!", 2, 0);
+                // ocppsetup.lcdPrint("No Connector ", 0, 0);
+                // ocppsetup.lcdPrint("is Available", 1, 0);
+                // ocppsetup.lcdPrint("to Start Charging!!", 2, 0);
 
                 ocppsetup.ledChangeColour(255, 0, 0);
                 delay(500);
@@ -747,7 +747,7 @@ void loop()
                 ocppsetup.ledChangeColour(0, 0, 0);
                 delay(500);
                 payload["status"] = "Rejected";
-                ocppsetup.lcdClear();
+                // ocppsetup.lcdClear();
                 return;
             }
             else

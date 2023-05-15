@@ -64,12 +64,12 @@ void StopTransaction::initiate()
 
     AO_DBG_INFO("StopTransaction initiated!");
     // charge_EV = false;
-    ocppsetup.lcdClear();
+    // ocppsetup.lcdClear();
     ocppsetup.buzz();
-    ocppsetup.lcdPrint("StopTransaction",0,0);
-    ocppsetup.lcdPrint("initiated!",1,0);
+    // ocppsetup.lcdPrint("StopTransaction",0,0);
+    // ocppsetup.lcdPrint("initiated!",1,0);
     delay(1000);
-    ocppsetup.lcdClear();
+    // ocppsetup.lcdClear();
     //
     // OcppEvseState state = OcppEvseState::Finishing;
     payload["status"] = "Accepted";
@@ -118,12 +118,12 @@ std::unique_ptr<DynamicJsonDocument> StopTransaction::createReq()
         char buffer[1000];
         sprintf(buffer, "%d", meterStop2);
         char *temp_value = buffer;
-        ocppsetup_ocpp.lcdClear();
-        ocppsetup_ocpp.lcdPrint("Meter Stoped At,", 0, 0);
-        ocppsetup_ocpp.lcdPrint("( Wh )", 1, 0);
-        ocppsetup_ocpp.lcdPrint(temp_value, 2, 0);
+        // ocppsetup_ocpp.lcdClear();
+        // ocppsetup_ocpp.lcdPrint("Meter Stoped At,", 0, 0);
+        // ocppsetup_ocpp.lcdPrint("( Wh )", 1, 0);
+        // ocppsetup_ocpp.lcdPrint(temp_value, 2, 0);
         delay(10000);
-        ocppsetup_ocpp.lcdClear();
+        // ocppsetup_ocpp.lcdClear();
     }
     if (otimestamp > MIN_TIME)
     {
@@ -158,15 +158,15 @@ void StopTransaction::processConf(JsonObject payload)
     ocppsetup.buzz();
     // setstate("Finishing");
     
-        ocppsetup_ocpp.lcdClear();
+        // ocppsetup_ocpp.lcdClear();
         do
         {
             delay(500);
             ocppsetup_ocpp.ledChangeColour(255, 0, 0);
-            ocppsetup.lcdClear();
-            ocppsetup.lcdPrint("Please Unplug ", 0, 0);
-            ocppsetup.lcdPrint("Your EV !! ", 1, 0);
-            ocppsetup.lcdPrint("", 1, 0);
+            // ocppsetup.lcdClear();
+            // ocppsetup.lcdPrint("Please Unplug ", 0, 0);
+            // ocppsetup.lcdPrint("Your EV !! ", 1, 0);
+            // ocppsetup.lcdPrint("", 1, 0);
 
             AO_DBG_INFO("PLease unplug your EV");
             delay(2000);
@@ -178,11 +178,11 @@ void StopTransaction::processConf(JsonObject payload)
         // payload["meterStop"] = 0.0;//
         delay(500);
         ocppsetup.buzz();
-        ocppsetup_ocpp.lcdClear();
-        ocppsetup_ocpp.lcdPrint("Charging Ended", 0, 0);
-        ocppsetup_ocpp.lcdPrint("Thankyou for Using", 1, 0);
-        ocppsetup_ocpp.lcdPrint("GridenPoint !", 2, 0);
-        ocppsetup.lcdPrint("MTR: ", 3, 0);
+        // ocppsetup_ocpp.lcdClear();
+        // ocppsetup_ocpp.lcdPrint("Charging Ended", 0, 0);
+        // ocppsetup_ocpp.lcdPrint("Thankyou for Using", 1, 0);
+        // ocppsetup_ocpp.lcdPrint("GridenPoint !", 2, 0);
+        // ocppsetup.lcdPrint("MTR: ", 3, 0);
         char *mtr;
         if (ocppsetup.getStatus() == "Available")
             mtr = "OK"; //"AVL";
@@ -199,12 +199,12 @@ void StopTransaction::processConf(JsonObject payload)
         else if (ocppsetup.getStatus() == "Faulted")
             mtr = "ERR"; //"FAULT";
 
-        ocppsetup.lcdPrint(mtr, 3, 5);
-        ocppsetup.lcdPrint("NTWK: ", 3, 10);
+        // ocppsetup.lcdPrint(mtr, 3, 5);
+        // ocppsetup.lcdPrint("NTWK: ", 3, 10);
         const char *ntwk = ((WiFi.status() == WL_CONNECTED) ? "OK" : "ERR");
-        ocppsetup.lcdPrint(ntwk, 3, 16);
+        // ocppsetup.lcdPrint(ntwk, 3, 16);
         delay(10000);
-        ocppsetup_ocpp.lcdClear();
+        // ocppsetup_ocpp.lcdClear();
     
 }
 

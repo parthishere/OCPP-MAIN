@@ -19,7 +19,8 @@ void testFileIO(fs::FS &fs, const char *path);
 
 namespace Parth
 {
-    LiquidCrystal_I2C lcd(0x27, 20, 4);
+    // LiquidCrystal_I2C lcd(0x27, 20, 4);
+    
     EspSoftwareSerial::UART myPort;
     int RledChannel = 1;
     int GledChannel = 2;
@@ -28,8 +29,8 @@ namespace Parth
 };
 using namespace Parth;
 
-bool initialized_lcd = false;
-bool initialized_led = false;
+// bool initialized_lcd = false;
+// bool initialized_led = false;
 // bool connection_EV = false;
 // bool charge_EV = false;
 char *ssid;
@@ -69,22 +70,22 @@ char *status_copy;
 Ticker periodicTicker;
 Ticker onceTicker;
 
-void OcppSetup::lcdInitialize()
-{
+// void OcppSetup::lcdInitialize()
+// {
 
-    Serial.println("LCD Initialized !");
-    if (initialized_lcd == false)
-    {
-        initialized_lcd = true;
-        lcd.init();
-        lcd.clear();
-        lcd.backlight();
-    }
-    else
-    {
-        Serial.println("LCD Initialized !");
-    }
-}
+//     Serial.println("LCD Initialized !");
+//     if (initialized_lcd == false)
+//     {
+//         initialized_lcd = true;
+//         lcd.init();
+//         lcd.clear();
+//         lcd.backlight();
+//     }
+//     else
+//     {
+//         Serial.println("LCD Initialized !");
+//     }
+// }
 
 void OcppSetup::ledChangeColour(int R, int G, int B)
 {
@@ -113,26 +114,26 @@ void OcppSetup::ledChangeColour(int R, int G, int B)
 //     Serial.printf("\n %d : %d : %d",HH,MM,S);
 // }
 
-void OcppSetup::lcdPrint(const char *msg, int x, int y)
-{
-    lcd.setCursor(y, x);
-    lcd.print(msg);
-}
+// void OcppSetup::lcdPrint(const char *msg, int x, int y)
+// {
+//     lcd.setCursor(y, x);
+//     lcd.print(msg);
+// }
 
-void OcppSetup::lcdPrint(const char *msg)
-{
-    lcd.setCursor(0, 0);
-    lcd.print(msg);
-}
-void OcppSetup::lcdPrintint(int msg, int x, int y)
-{
-    lcd.setCursor(y, x);
-    lcd.print(msg);
-}
-void OcppSetup::lcdClear()
-{
-    lcd.clear();
-}
+// void OcppSetup::lcdPrint(const char *msg)
+// {
+//     lcd.setCursor(0, 0);
+//     lcd.print(msg);
+// }
+// void OcppSetup::lcdPrintint(int msg, int x, int y)
+// {
+//     lcd.setCursor(y, x);
+//     lcd.print(msg);
+// }
+// void OcppSetup::lcdClear()
+// {
+//     lcd.clear();
+// }
 
 void OcppSetup::touchSetup(){
     myPort.begin(115200, SWSERIAL_8N1, MYPORT_RX, MYPORT_TX, false);

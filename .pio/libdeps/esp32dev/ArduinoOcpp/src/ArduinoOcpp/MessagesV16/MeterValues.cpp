@@ -110,10 +110,10 @@ std::unique_ptr<DynamicJsonDocument> MeterValues::createReq()
                 char buffer[1000];
                 sprintf(buffer, "%.3f", temp_value_int);
                 temp_value = buffer;
-                ocppsetup.lcdPrint("               ", 1, 5);
-                ocppsetup.lcdPrint("Wh : ", 1, 0);
-                ocppsetup.lcdPrint(temp_value, 1, 5);
-                ocppsetup.lcdPrint("MTR: ", 3, 0);
+                // ocppsetup.lcdPrint("               ", 1, 5);
+                // ocppsetup.lcdPrint("Wh : ", 1, 0);
+                // ocppsetup.lcdPrint(temp_value, 1, 5);
+                // ocppsetup.lcdPrint("MTR: ", 3, 0);
 
                 sampledValue_1["value"] = temp_value;
                 sampledValue_1["measurand"] = "Energy.Active.Import.Register";
@@ -124,10 +124,10 @@ std::unique_ptr<DynamicJsonDocument> MeterValues::createReq()
                 char buffer[1000];
                 sprintf(buffer, "%.3f", temp_value_int);
                 temp_value = buffer;
-                ocppsetup.lcdPrint("               ", 1, 5);
-                ocppsetup.lcdPrint("Wh : ", 1, 0);
-                ocppsetup.lcdPrint(temp_value, 1, 5);
-                ocppsetup.lcdPrint("MTR: ", 3, 0);
+                // ocppsetup.lcdPrint("               ", 1, 5);
+                // ocppsetup.lcdPrint("Wh : ", 1, 0);
+                // ocppsetup.lcdPrint(temp_value, 1, 5);
+                // ocppsetup.lcdPrint("MTR: ", 3, 0);
 
                 sampledValue_1["value"] = temp_value;
                 sampledValue_1["measurand"] = "Energy.Active.Import.Register";
@@ -150,10 +150,10 @@ std::unique_ptr<DynamicJsonDocument> MeterValues::createReq()
                 char buffer[1000];
                 sprintf(buffer, "%.3f", temp_value_int);
                 temp_value = buffer;
-                ocppsetup.lcdPrint("               ", 1, 5);
-                ocppsetup.lcdPrint("W : ", 1, 10);
-                ocppsetup.lcdPrint(temp_value, 1, 5);
-                ocppsetup.lcdPrint("MTR: ", 3, 0);
+                // ocppsetup.lcdPrint("               ", 1, 5);
+                // ocppsetup.lcdPrint("W : ", 1, 10);
+                // ocppsetup.lcdPrint(temp_value, 1, 5);
+                // ocppsetup.lcdPrint("MTR: ", 3, 0);
 
                 sampledValue_1["value"] = temp_value;
                 sampledValue_1["measurand"] = "Energy.Active.Import.Register";
@@ -164,10 +164,10 @@ std::unique_ptr<DynamicJsonDocument> MeterValues::createReq()
                 char buffer[1000];
                 sprintf(buffer, "%.3f", temp_value_int);
                 temp_value = buffer;
-                ocppsetup.lcdPrint("               ", 1, 5);
-                ocppsetup.lcdPrint("W : ", 1, 10);
-                ocppsetup.lcdPrint(temp_value, 1, 5);
-                ocppsetup.lcdPrint("MTR: ", 3, 0);
+                // ocppsetup.lcdPrint("               ", 1, 5);
+                // ocppsetup.lcdPrint("W : ", 1, 10);
+                // ocppsetup.lcdPrint(temp_value, 1, 5);
+                // ocppsetup.lcdPrint("MTR: ", 3, 0);
 
                 sampledValue_1["value"] = temp_value;
                 sampledValue_1["measurand"] = "Energy.Active.Import.Register";

@@ -147,11 +147,11 @@ public:
     // int S=0,HH=0,MM=0;
     void ledChangeColour(int R, int G, int B);
 
-    void lcdInitialize();
-    void lcdPrint(const char *msg, int x, int y);
-    void lcdPrint(const char *msg);
-    void lcdClear();
-    void lcdPrintint(int msg, int x, int y);
+    // void lcdInitialize();
+    // void lcdPrint(const char *msg, int x, int y);
+    // void lcdPrint(const char *msg);
+    // void lcdClear();
+    // void lcdPrintint(int msg, int x, int y);
 
     void touchSetup();
     byte * touchRead();

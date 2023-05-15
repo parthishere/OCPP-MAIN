@@ -31,12 +31,12 @@ void OcppClientSocket::setReceiveTXTcallback(ReceiveTXTcallback &callback) {
         switch (type) {
             case WStype_DISCONNECTED:
                 ocppsetup_ocpp.ServerDisconnect();
-                ocppsetup_ocpp.lcdClear();
-                ocppsetup_ocpp.lcdPrint("Disconnected from",0,0);
-                ocppsetup_ocpp.lcdPrint("SERVER",1,0);
+                // ocppsetup_ocpp.lcdClear();
+                // ocppsetup_ocpp.lcdPrint("Disconnected from",0,0);
+                // ocppsetup_ocpp.lcdPrint("SERVER",1,0);
                 ocppsetup.buzz();
                 delay(1000);
-                ocppsetup_ocpp.lcdClear();
+                // ocppsetup_ocpp.lcdClear();
                 ocppsetup_ocpp.setServerStatus("ERR");
                 disconnecttime++;
                 AO_DBG_INFO("Disconnected");
@@ -44,11 +44,11 @@ void OcppClientSocket::setReceiveTXTcallback(ReceiveTXTcallback &callback) {
             case WStype_CONNECTED:
                 AO_DBG_INFO("Connected to url: %s", payload);
                 ocppsetup_ocpp.ServerConnect();
-                ocppsetup_ocpp.lcdClear();
-                ocppsetup_ocpp.lcdPrint("Connected to Server");
+                // ocppsetup_ocpp.lcdClear();
+                // ocppsetup_ocpp.lcdPrint("Connected to Server");
                 ocppsetup.buzz();
                 delay(1000);
-                ocppsetup_ocpp.lcdClear();
+                // ocppsetup_ocpp.lcdClear();
                 ocppsetup_ocpp.setServerStatus("CNT");
                 disconnecttime = 0;
                 break;

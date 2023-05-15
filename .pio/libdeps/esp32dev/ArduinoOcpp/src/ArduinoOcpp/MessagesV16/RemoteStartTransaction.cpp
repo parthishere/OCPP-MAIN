@@ -137,13 +137,13 @@ std::unique_ptr<DynamicJsonDocument> RemoteStartTransaction::createConf()
                     ocppsetup.buzz();
                     Serial.println("Please Connect Charger first then Try Again");
                     payload["status"] = "Rejected";
-                    ocppsetup_ocpp.lcdClear();
+                    // ocppsetup_ocpp.lcdClear();
 
-                    ocppsetup_ocpp.lcdClear();
+                    // ocppsetup_ocpp.lcdClear();
 
-                    ocppsetup_ocpp.lcdPrint("Please Connect ", 0, 0);
-                    ocppsetup_ocpp.lcdPrint("Charger First then ", 1, 0);
-                    ocppsetup_ocpp.lcdPrint("Try Again ! ", 2, 0);
+                    // ocppsetup_ocpp.lcdPrint("Please Connect ", 0, 0);
+                    // ocppsetup_ocpp.lcdPrint("Charger First then ", 1, 0);
+                    // ocppsetup_ocpp.lcdPrint("Try Again ! ", 2, 0);
 
                     ocppsetup_ocpp.ledChangeColour(255, 0, 0);
                     delay(500);
@@ -161,7 +161,7 @@ std::unique_ptr<DynamicJsonDocument> RemoteStartTransaction::createConf()
                     delay(500);
                     ocppsetup_ocpp.ledChangeColour(0, 0, 0);
                     delay(500);
-                    ocppsetup_ocpp.lcdClear();
+                    // ocppsetup_ocpp.lcdClear();
                     // Serial.printf("Reason: %s",payload["status"]);
                 }
             }
@@ -177,11 +177,11 @@ std::unique_ptr<DynamicJsonDocument> RemoteStartTransaction::createConf()
             // Serial.println("No connector to start transaction");
             // AO_DBG_INFO("No connector to start transaction");
             ocppsetup.buzz();
-            ocppsetup.lcdClear();
+            // ocppsetup.lcdClear();
 
-            ocppsetup.lcdPrint("No Connector ", 0, 0);
-            ocppsetup.lcdPrint("is Available", 1, 0);
-            ocppsetup.lcdPrint("to Start Charging!!", 2, 0);
+            // ocppsetup.lcdPrint("No Connector ", 0, 0);
+            // ocppsetup.lcdPrint("is Available", 1, 0);
+            // ocppsetup.lcdPrint("to Start Charging!!", 2, 0);
 
             ocppsetup.ledChangeColour(255, 0, 0);
             delay(500);
@@ -200,7 +200,7 @@ std::unique_ptr<DynamicJsonDocument> RemoteStartTransaction::createConf()
             ocppsetup.ledChangeColour(0, 0, 0);
             delay(500);
 
-            ocppsetup.lcdClear();
+            // ocppsetup.lcdClear();
             Serial.println("No connector to start transaction");
             AO_DBG_INFO("No connector to start transaction");
             payload["status"] = "Rejected";
@@ -266,11 +266,11 @@ payload["status"] = "Accepted";
         AO_DBG_INFO("No connector to start transaction");
         // payload["status"] = "Accepted";
         ocppsetup.buzz();
-        ocppsetup.lcdClear();
+        // ocppsetup.lcdClear();
 
-        ocppsetup.lcdPrint("No Connector ", 0, 0);
-        ocppsetup.lcdPrint("is Available", 1, 0);
-        ocppsetup.lcdPrint("to Start Charging!!", 2, 0);
+        // ocppsetup.lcdPrint("No Connector ", 0, 0);
+        // ocppsetup.lcdPrint("is Available", 1, 0);
+        // ocppsetup.lcdPrint("to Start Charging!!", 2, 0);
 
         ocppsetup.ledChangeColour(255, 0, 0);
         delay(500);
@@ -289,7 +289,7 @@ payload["status"] = "Accepted";
         ocppsetup.ledChangeColour(0, 0, 0);
         delay(500);
 
-        ocppsetup.lcdClear();
+        // ocppsetup.lcdClear();
         payload["status"] = "Rejected";
     }
 
