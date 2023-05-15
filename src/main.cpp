@@ -401,7 +401,7 @@ void loop()
     }
     else if (ocppsetup.getStatus() == "Unavailable" && digitalRead(SOS_pin) == SOS_pressed)//sos button pressed condition
     {
-        ocppsetup_ocpp.ledChangeColour(255, 0, 0);
+        ocppsetup.ledChangeColour(255, 0, 0);
         payload["status"] = "Rejected";
         transaction_in_process = false;
         tran_id = -1;
