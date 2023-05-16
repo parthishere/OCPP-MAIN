@@ -285,6 +285,7 @@ void loop()
     char currentstate1 = *currentstate;
     
     JsonObject payload;
+    ocppsetup.dwin_wifi();
     // if (initial_push == true)
     // {
     //     initial_push = false;
@@ -356,6 +357,11 @@ void loop()
         // ocppsetup.lcdPrint("                    ", 2, 0);
         ocppsetup.dwin_state(AVL_GREEN);
         ocppsetup.dwin_qr(1);
+        ocppsetup.dwin_main(BLANK_MAIN);
+        ocppsetup.dwin_rfid(0);
+        ocppsetup.meterWritev(00);
+        ocppsetup.meterWritewh(00);
+        ocppsetup.meterWriteI(00);
         ocppsetup.ledChangeColour(0, 0, 255);
         was_available = true;
         delay(500);
@@ -365,10 +371,16 @@ void loop()
         MM = 0;
         S = 0;
     }
+    else if(ocppsetup.getStatus() == "Preparing")
+    {
+        ocppsetup.dwin_state(PRE_GREEN);
+    }
     else if (ocppsetup.getStatus() == "Charging") //charging condition and relay turning on.
     {
         ocppsetup.ledChangeColour(0, 255, 0);
         ocppsetup.dwin_state(CHAR_GREEN);
+        ocppsetup.dwin_qr(0);
+        ocppsetup.dwin_main(MOREINFO_MAIN);
         // ocppsetup.lcdPrint("Charging Started", 0, 2);
         // ocppsetup.lcdPrint("Time : ", 2, 0);
         // ocppsetup.lcdPrint(payload["timestamp"], 2, 7);
@@ -550,7 +562,7 @@ void loop()
                     // ocppsetup.lcdPrint("",1, 0);
                     // ocppsetup.lcdPrint("User is Authorized", 2, 0);
                     // ocppsetup.lcdPrint("to Start Charging", 3, 0);
-                    ocppsetup.dwin_rfid(true);
+                    ocppsetup.dwin_rfid(1);
                     ocppsetup.dwin_main(AUTHENTICATED_MAIN);
                     Serial.println(F("[main] User is authorized to start charging"));
                     ocppsetup.ledChangeColour(0, 255, 0);
@@ -584,7 +596,7 @@ void loop()
                         // ocppsetup.lcdPrint("",1, 0);
                         // ocppsetup.lcdPrint("Status ", 2, 0);
                         // ocppsetup.lcdPrint(st, 3, 0);
-                        ocppsetup.dwin_rfid(false);
+                        ocppsetup.dwin_rfid(2);
                         ocppsetup.dwin_main(UNAUTHENTICATED_MAIN);
                         ocppsetup.ledChangeColour(255, 0, 0);
                         delay(500);

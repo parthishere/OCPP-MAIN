@@ -208,11 +208,12 @@ byte * OcppSetup::touchRead(){
 } 
 
 void OcppSetup::_touchWrite(int value, byte address_h, byte address_l){
-    byte array[8] = { 0x5a, 0xa5, 0x05, 0x82, address_h, address_l, 0x00};
+    byte array[8] = { 0x5a, 0xa5, 0x05, 0x82, address_h, address_l, 0X00, value};
+    myPort.write(array,8);
 }
 
 void OcppSetup::meterWritewh(double WH){
-    dwin_state(CHAR_GREEN);
+    // dwin_state(CHAR_GREEN);
     
     byte wh_write[8];
     byte * wh = reinterpret_cast<byte*> (&WH);
@@ -242,7 +243,7 @@ void OcppSetup::meterWritewh(double WH){
 
 void OcppSetup::meterWritev(double V)
 {
-    dwin_state(CHAR_GREEN);
+    // dwin_state(CHAR_GREEN);
     byte v_write[8];
     byte * v = reinterpret_cast<byte*> (&V);
     memcpy(v_write, v, 8);
@@ -253,7 +254,7 @@ void OcppSetup::meterWritev(double V)
 
 void OcppSetup::meterWriteI(double I)
 {
-    dwin_state(CHAR_GREEN);
+    // dwin_state(CHAR_GREEN);
     byte i_write[8];
     byte * i = reinterpret_cast<byte*> (&I);
     memcpy(i_write, i, 8);
@@ -265,9 +266,18 @@ void OcppSetup::meterWriteI(double I)
 
 void OcppSetup::dwin_server_wifi(int strength_server){
     _touchWrite(strength_server, SERVER_MEM_H, SERVER_MEM_L);
-    int wifi = map(WiFi.RSSI(), 0,50, 0, 5);
-    _touchWrite(wifi, WIFI_MEM_H, WIFI_MEM_L);
+    // int wifi = map(WiFi.RSSI(), 0,50, 0, 5);
+    // Serial.println(wifi);
+    // _touchWrite(wifi, WIFI_MEM_H, WIFI_MEM_L);
 }
+
+void OcppSetup::dwin_wifi()
+{
+    int wifi = map(WiFi.RSSI(), 0,50, 0, 5);
+    int wifi_num = std::abs(wifi);
+    _touchWrite(wifi_num, WIFI_MEM_H, WIFI_MEM_L);
+}
+
 
 void OcppSetup::dwin_main(int value){
     
@@ -294,11 +304,23 @@ void OcppSetup::dwin_main(int value){
     }
 }
 
-void OcppSetup::dwin_rfid(bool auth){
-    int hey = auth == true? 1 : 2;
-    _touchWrite(hey, RFID_MEM_H, RFID_MEM_L);
-    int main = auth == true ? AUTHENTICATED_MAIN: UNAUTHENTICATED_MAIN;
-    dwin_main(main);
+void OcppSetup::dwin_rfid(int auth){
+    if(auth == 0)
+    {
+        byte array3[8] = { 0x5a, 0xa5, 0x05, 0x82, 0x10, 0x00, 0x00, 00};
+        myPort.write(array3, 8);
+    }
+    else if (auth == 1)
+    {
+        byte array3[8] = { 0x5a, 0xa5, 0x05, 0x82, 0x10, 0x00, 0x00, 01};
+        myPort.write(array3, 8);
+    }
+    else if(auth == 2)
+    {
+        byte array3[8] = { 0x5a, 0xa5, 0x05, 0x82, 0x10, 0x00, 0x00, 02};
+        myPort.write(array3, 8);
+    }
+    
 }
 
  void OcppSetup::dwin_state(int value){

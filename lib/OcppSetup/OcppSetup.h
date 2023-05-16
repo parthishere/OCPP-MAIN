@@ -91,7 +91,7 @@
 
 
 #define BLANK_GREEN 0
-#define AVL_GREEN 1
+#define AVL_GREEN 01
 #define CHAR_GREEN 2
 #define PRE_GREEN 3
 
@@ -159,11 +159,11 @@ public:
     void meterWritev(double V);
     void meterWriteI(double I);
     void dwin_server_wifi(int strength_server);
-    void dwin_rfid(bool auth);
+    void dwin_rfid(int auth);
     void dwin_state(int value);
     void dwin_main(int value);
     void dwin_qr(int value);
-
+    void dwin_wifi();
     void fileManageInitialize(const char *ssid, const char *pass);
     void ServerDisconnect();
     void ServerConnect();
