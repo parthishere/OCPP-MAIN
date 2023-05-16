@@ -211,7 +211,7 @@ void OcppSetup::_touchWrite(int value, byte address_h, byte address_l){
     byte array[8] = { 0x5a, 0xa5, 0x05, 0x82, address_h, address_l, 0x00};
 }
 
-void OcppSetup::meterWrite(double WH, double V, double I){
+void OcppSetup::meterWritewh(double WH){
     dwin_state(CHAR_GREEN);
     
     byte wh_write[8];
@@ -222,14 +222,38 @@ void OcppSetup::meterWrite(double WH, double V, double I){
     myPort.write(array_wh, 14);
 
 
+    // byte v_write[8];
+    // byte * v = reinterpret_cast<byte*> (&V);
+    // memcpy(v_write, v, 8);
+    // byte array_v[14] = { 0x5a, 0xa5, 0x0b, 0x82, V_MEM_H, V_MEM_L, v_write[7], v_write[6], v_write[5], v_write[4], v_write[3], v_write[2], v_write[1], v_write[0]};
+
+    // myPort.write(array_v, 14);
+
+
+    // byte i_write[8];
+    // byte * i = reinterpret_cast<byte*> (&I);
+    // memcpy(i_write, i, 8);
+    // byte array_i[14] = { 0x5a, 0xa5, 0x0b, 0x82, I_MEM_H, I_MEM_L, i_write[7], i_write[6], i_write[5], i_write[4], i_write[3], i_write[2], i_write[1], i_write[0]};
+
+    // myPort.write(array_i, 14);
+    
+
+}
+
+void OcppSetup::meterWritev(double V)
+{
+    dwin_state(CHAR_GREEN);
     byte v_write[8];
     byte * v = reinterpret_cast<byte*> (&V);
     memcpy(v_write, v, 8);
     byte array_v[14] = { 0x5a, 0xa5, 0x0b, 0x82, V_MEM_H, V_MEM_L, v_write[7], v_write[6], v_write[5], v_write[4], v_write[3], v_write[2], v_write[1], v_write[0]};
 
     myPort.write(array_v, 14);
+}
 
-
+void OcppSetup::meterWriteI(double I)
+{
+    dwin_state(CHAR_GREEN);
     byte i_write[8];
     byte * i = reinterpret_cast<byte*> (&I);
     memcpy(i_write, i, 8);
@@ -237,10 +261,7 @@ void OcppSetup::meterWrite(double WH, double V, double I){
 
     myPort.write(array_i, 14);
     
-
 }
-
-
 
 void OcppSetup::dwin_server_wifi(int strength_server){
     _touchWrite(strength_server, SERVER_MEM_H, SERVER_MEM_L);
@@ -297,7 +318,19 @@ void OcppSetup::dwin_rfid(bool auth){
     }
  }
 
-
+void OcppSetup::dwin_qr(int value)
+{
+    if(value == 0)
+    {
+        byte array3[8] = { 0x5a, 0xa5, 0x05, 0x82, 0x14, 0x00, 0x00, 00};
+        myPort.write(array3, 8);
+    }
+    if(value == 1)
+    {
+        byte array3[8] = { 0x5a, 0xa5, 0x05, 0x82, 0x14, 0x00, 0x00, 01};
+        myPort.write(array3, 8);
+    }
+}
 
 void listDir(fs::FS &fs, const char *dirname, uint8_t levels)
 {

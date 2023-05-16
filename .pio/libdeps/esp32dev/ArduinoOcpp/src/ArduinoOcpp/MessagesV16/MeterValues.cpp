@@ -118,7 +118,7 @@ std::unique_ptr<DynamicJsonDocument> MeterValues::createReq()
                 // ocppsetup.lcdPrint("Wh : ", 1, 0);
                 // ocppsetup.lcdPrint(temp_value, 1, 5);
                 // ocppsetup.lcdPrint("MTR: ", 3, 0);
-                ocppsetup.meterWrite(double_value, 00,00);
+                ocppsetup.meterWritewh(double_value);
                 sampledValue_1["value"] = temp_value;
                 sampledValue_1["measurand"] = "Energy.Active.Import.Register";
                 sampledValue_1["unit"] = "Wh";
@@ -133,7 +133,7 @@ std::unique_ptr<DynamicJsonDocument> MeterValues::createReq()
                 // ocppsetup.lcdPrint("Wh : ", 1, 0);
                 // ocppsetup.lcdPrint(temp_value, 1, 5);
                 // ocppsetup.lcdPrint("MTR: ", 3, 0);
-                ocppsetup.meterWrite(double_value, 00,00);
+                ocppsetup.meterWritewh(double_value);
                 sampledValue_1["value"] = temp_value;
                 sampledValue_1["measurand"] = "Energy.Active.Import.Register";
                 sampledValue_1["unit"] = "Wh";
@@ -159,10 +159,11 @@ std::unique_ptr<DynamicJsonDocument> MeterValues::createReq()
                 // ocppsetup.lcdPrint("W : ", 1, 10);
                 // ocppsetup.lcdPrint(temp_value, 1, 5);
                 // ocppsetup.lcdPrint("MTR: ", 3, 0);
-
+                double double_value = strtod(temp_value, nullptr);
+                ocppsetup.meterWritev(double_value);
                 sampledValue_1["value"] = temp_value;
                 sampledValue_1["measurand"] = "Energy.Active.Import.Register";
-                sampledValue_1["unit"] = "W";
+                sampledValue_1["unit"] = "V";
             }
             else{
                 temp_value_int = temp_value_int * -1;
@@ -173,10 +174,11 @@ std::unique_ptr<DynamicJsonDocument> MeterValues::createReq()
                 // ocppsetup.lcdPrint("W : ", 1, 10);
                 // ocppsetup.lcdPrint(temp_value, 1, 5);
                 // ocppsetup.lcdPrint("MTR: ", 3, 0);
-
+                double double_value = strtod(temp_value, nullptr);
+                ocppsetup.meterWritev(double_value);
                 sampledValue_1["value"] = temp_value;
                 sampledValue_1["measurand"] = "Energy.Active.Import.Register";
-                sampledValue_1["unit"] = "W";
+                sampledValue_1["unit"] = "V";
             }
         }
     }

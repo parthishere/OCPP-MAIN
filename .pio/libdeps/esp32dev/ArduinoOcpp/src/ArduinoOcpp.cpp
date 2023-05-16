@@ -172,13 +172,15 @@ void OCPP_loop() {
                 // ocppsetup.lcdPrint("Please Unplug ", 1, 0);
                 // ocppsetup.lcdPrint("Your EV !! ", 2, 0);
                 // ocppsetup.lcdPrint("", 1, 0);
-
                 AO_DBG_INFO("PLease unplug your EV");
                 delay(2000);
             } while (digitalRead(EV_Plug_Pin) != EV_Unplugged);
         }
         // ocppsetup.lcdClear();
         // ocppsetup.lcdPrint("SOS PRESSED !!",1,2);
+        ocppsetup.dwin_main(SOS_MAIN);
+        ocppsetup.dwin_rfid(false);
+        ocppsetup.dwin_qr(0);
         bool available = false;
         ocppsetup.buzzcontinue();
         auto& model = ocppEngine->getOcppModel();

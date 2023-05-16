@@ -155,11 +155,14 @@ public:
 
     void touchSetup();
     byte * touchRead();
-    void meterWrite(double WH, double V, double I);
+    void meterWritewh(double WH);
+    void meterWritev(double V);
+    void meterWriteI(double I);
     void dwin_server_wifi(int strength_server);
     void dwin_rfid(bool auth);
     void dwin_state(int value);
     void dwin_main(int value);
+    void dwin_qr(int value);
 
     void fileManageInitialize(const char *ssid, const char *pass);
     void ServerDisconnect();

@@ -183,6 +183,7 @@ void StopTransaction::processConf(JsonObject payload)
         // ocppsetup_ocpp.lcdPrint("Thankyou for Using", 1, 0);
         // ocppsetup_ocpp.lcdPrint("GridenPoint !", 2, 0);
         // ocppsetup.lcdPrint("MTR: ", 3, 0);
+        ocppsetup.dwin_main(THANKYOU_MAIN);
         char *mtr;
         if (ocppsetup.getStatus() == "Available")
             mtr = "OK"; //"AVL";
