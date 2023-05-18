@@ -77,7 +77,7 @@ void OcppClientSocket::setReceiveTXTcallback(ReceiveTXTcallback &callback) {
                 AO_DBG_WARN("Unsupported WebSocket event type");
                 break;
         }
-        if(disconnecttime>=30)
+        if(disconnecttime == 5)
         {
             if(ocppsetup.getStatus()=="Charging")
             {

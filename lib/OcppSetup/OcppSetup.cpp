@@ -273,9 +273,10 @@ void OcppSetup::dwin_server_wifi(int strength_server){
 
 void OcppSetup::dwin_wifi()
 {
-    int wifi = map(WiFi.RSSI(), 0,50, 0, 5);
+    int wifi = map(WiFi.RSSI(), 0,50, 0, 3);
     int wifi_num = std::abs(wifi);
     _touchWrite(wifi_num, WIFI_MEM_H, WIFI_MEM_L);
+    // Serial.println(wifi_num);
 }
 
 

@@ -21,6 +21,9 @@
 // WiFi connnection details
 #define SSID "ALIENWARE"
 #define Password "He@ven$heth05"
+// #define SSID "Aagam Sheth"
+// #define Password "1234567890"
+
 
 // Webserver details
 #define OCPP_HOST "192.168.137.1"//"ocpp.gridenpower.com"//"65.2.90.45" //"3.109.235.50" //"3.110.42.33" // //
@@ -28,6 +31,11 @@
 #define OCPP_URL "ws://192.168.137.1:6630/ocpp/GP001"//"ws://ocpp.gridenpower.com:6630/ocpp/GP004"//"ws://65.2.90.45:6630/ocpp/CKSS0999" //"ws://3.109.235.50:6630/ocpp/GP004" //"ws://3.110.42.33:6630/ocpp/GP004"
 
 #define FILE_SERVER_URL "https://fileuploads.up.railway.app"
+
+/*
+LCD RX -> ESP SDA pin 21
+LCD TX -> ESP SCL pin 22
+*/
 
 // RFid data read
 #define SDA_SS_PIN 5 // 21 //ESP Interface Pin
@@ -285,7 +293,7 @@ void loop()
     char currentstate1 = *currentstate;
     
     JsonObject payload;
-    ocppsetup.dwin_wifi();
+    
     // if (initial_push == true)
     // {
     //     initial_push = false;
@@ -326,6 +334,7 @@ void loop()
     //     millissec = millis();
     //     }
     // }
+    ocppsetup.dwin_wifi();
     if (millis() - prev_millis > 500)//display meter settings.
     {
         char *mtr;
@@ -381,6 +390,7 @@ void loop()
         ocppsetup.dwin_state(CHAR_GREEN);
         ocppsetup.dwin_qr(0);
         ocppsetup.dwin_main(MOREINFO_MAIN);
+        // ocppsetup.dwin_rfid(3);
         // ocppsetup.lcdPrint("Charging Started", 0, 2);
         // ocppsetup.lcdPrint("Time : ", 2, 0);
         // ocppsetup.lcdPrint(payload["timestamp"], 2, 7);
