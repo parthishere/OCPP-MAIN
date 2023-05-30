@@ -81,6 +81,11 @@
 #define TIME_MEM_H 0x19
 #define TIME_MEM_L 0x00
 
+#define CONNECTOR_1_MEM_H 0x20
+#define CONNECTOR_1_MEM_L 0x00
+
+#define CONNECTOR_2_MEM_H 0x21
+#define CONNECTOR_2_MEM_L 0x00
 
 #define UNAUTHENTICATED_MAIN 1
 #define AUTHENTICATED_MAIN 0
@@ -94,6 +99,10 @@
 #define AVL_GREEN 01
 #define CHAR_GREEN 2
 #define PRE_GREEN 3
+
+#define CONNECTOR_1 0
+
+#define CONNECTOR_2 1
 
 
 // extern bool connection_EV;
@@ -164,6 +173,7 @@ public:
     void dwin_main(int value);
     void dwin_qr(int value);
     void dwin_wifi();
+    void dwin_connector_no(int value);
     void fileManageInitialize(const char *ssid, const char *pass);
     void ServerDisconnect();
     void ServerConnect();

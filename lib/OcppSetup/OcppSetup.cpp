@@ -355,6 +355,20 @@ void OcppSetup::dwin_qr(int value)
     }
 }
 
+void OcppSetup::dwin_connector_no(int value)
+{
+    if(value == 0)
+    {
+        byte array3[8] = { 0x5a, 0xa5, 0x05, 0x82, CONNECTOR_1_MEM_H, CONNECTOR_1_MEM_L, 0x00, CONNECTOR_1};
+        myPort.write(array3, 8);
+    }
+    if(value == 1)
+    {
+        byte array3[8] = { 0x5a, 0xa5, 0x05, 0x82, CONNECTOR_2_MEM_H, CONNECTOR_2_MEM_L, 0x00, CONNECTOR_2};
+        myPort.write(array3, 8);
+    }
+}
+
 void listDir(fs::FS &fs, const char *dirname, uint8_t levels)
 {
     Serial.printf("Listing directory: %s\r\n", dirname);
