@@ -165,7 +165,7 @@ void setup()
     ledcSetup(0, 1000, 8); // channel=0, freq=1000Hz, range=(2^8)-1
     ledcAttachPin(Amperage_Pin, 0);
     ledcWrite(Amperage_Pin, 256); // 256 is constant +3.3V DC
-
+    
     /*------------------------------Initializing Wifi connection ---------------------------*/
     // Wifi connection procedure
     Serial.print(F("Wait for Wifi to connect : "));
